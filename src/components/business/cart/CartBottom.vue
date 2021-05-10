@@ -17,47 +17,48 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import CheckButton from './CheckButton.vue'
-export default {
-  name: 'CartBottom',
-  components:{CheckButton},
-  computed:{
-    ...mapGetters(['cartList']),
-    totalPrice () { //计算选中商品的总价
-      return '￥' + this.cartList.filter(item => {
-        return item.checked
-      }).reduce((preValue, item) => {
-        return preValue + item.price * item.count
-      }, 0).toFixed(2)
-    },
-    cartLength () { //选中的数量
-      return this.cartList.filter(item => item.checked).length
-    },
-    selectAll () { //全选
-      //return this.cartLength === this.cartList.length
-      if (this.cartList.length === 0) return false
-      return !this.cartList.find(item => !item.checked)
-    }
-  },
-  methods: {
-    allClick () {
-      console.log('全选')
-      if (this.selectAll) {
-        this.cartList.forEach(element => element.checked = false);
-      } else {
-        this.cartList.forEach(element => element.checked = true)
+  import { mapGetters } from 'vuex'
+  import CheckButton from './CheckButton.vue'
+  import { Toast } from "mint-ui";
+  export default {
+    name: 'CartBottom',
+    components:{CheckButton, Toast},
+    computed:{
+      ...mapGetters(['cartList']),
+      totalPrice () { //计算选中商品的总价
+        return '￥' + this.cartList.filter(item => {
+          return item.checked
+        }).reduce((preValue, item) => {
+          return preValue + item.price * item.count
+        }, 0).toFixed(2)
+      },
+      cartLength () { //选中的数量
+        return this.cartList.filter(item => item.checked).length
+      },
+      selectAll () { //全选
+        //return this.cartLength === this.cartList.length
+        if (this.cartList.length === 0) return false
+        return !this.cartList.find(item => !item.checked)
       }
     },
-    accountClick () {
-      if (!this.selectAll) {
-        this.$toast.showToast('请选择商品')
-      } else {
-        this.$toast.showToast('去结算啦')
+    methods: {
+      allClick () {
+        console.log('全选')
+        if (this.selectAll) {
+          this.cartList.forEach(element => element.checked = false);
+        } else {
+          this.cartList.forEach(element => element.checked = true)
+        }
+      },
+      accountClick () {
+        if (!this.selectAll) {
+          Toast('请选择商品')
+        } else {
+          Toast('去结算啦')
+        }
       }
     }
   }
-}
 </script>
   
 <style lang="css" scoped>

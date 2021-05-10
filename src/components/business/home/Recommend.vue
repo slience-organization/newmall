@@ -3,9 +3,9 @@
     <div v-for="item in recommends" :key="item.acm" class="recommend-item">
       <!-- <a :href="item.link"> -->
         <a>
-        <img :src="item.image" alt="" @load="imgLoad">
-        <div>{{item.title}}</div>
-      </a>
+          <img :src="item.image" alt="" @load="imgLoad">
+          <div>{{item.title}}</div>
+        </a>
     </div>
   </div>
 </template>
@@ -30,7 +30,6 @@ export default {
     imgLoad () {
       if (!this.isLoad) {
         this.$emit('recommendImgLoad')
-        this.isLoad = true
       }
     }
   },
