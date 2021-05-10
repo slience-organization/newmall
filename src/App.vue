@@ -2,7 +2,7 @@
 
   <div id="app">
 
-    <keep-alive>
+    <keep-alive exclude="GoodsDetail">
       <router-view></router-view>
     </keep-alive>
 

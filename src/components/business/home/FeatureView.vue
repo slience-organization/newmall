@@ -2,7 +2,7 @@
   <div class="feature">
     <!-- <a href="https://act.mogujie.com/zzlx67"> -->
     
-      <img src="~assets/img/home/recommend_bg.jpg" alt="" @load="imgLoad">
+      <img src="~assets/img/home/recommend_bg.jpg" alt="">
     
   </div>
 </template>
@@ -12,15 +12,11 @@ export default {
   name: 'FeatureView',
   data () {
     return {
-      isLoad: false
+      
     }
   },
   methods: {
-    imgLoad () {
-      if (!this.isLoad) {
-        this.$emit('featureImgLoad')
-      }
-    }
+    
   },
 }
 </script>

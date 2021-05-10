@@ -1,16 +1,21 @@
 <template>
 
   <div id="home">
-    <mt-header fixed title="购物街"></mt-header>
-    <mt-swipe :auto="4000" ref="swipe" id="swipe">
+
+    <mt-header fixed title="购物街" ref="header"></mt-header>
+
+    <mt-swipe :auto="4000">
       <mt-swipe-item v-for="(item,index) in banners" :key="index">
-          <img :src="item.image" alt="" @load="swipeLsn">
+          <img :src="item.image" alt="">
       </mt-swipe-item>
     </mt-swipe>
-    <recommend ref="recommend" id="recommend" :recommends="recommends" @recommendImgLoad="recommendImgLsn"></recommend>
-    <feature-view ref="featureView" id="featureView" @featureImgLoad="featureImgLsn"></feature-view>
-    <tab-control ref="cpTabControl" :titles="['流行','新款','精选']" 
-        @tabClick="tabClick" class="tabControlShown" v-show="isTabFixed"></tab-control>
+
+    <recommend ref="recommend" :recommends="recommends"></recommend>
+    
+    <feature-view ref="featureView"></feature-view>
+   
+    <tab-control ref="cpTabControl" :titles="['流行','新款','精选']"  @tabClick="tabClick" class="tabControlShown" v-show="isTabFixed"></tab-control>
+   
     <tab-control id="tabControl" ref="tabControl" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
     
     <mt-loadmore :bottom-method="loadBottom" ref="loadmore">
@@ -58,10 +63,9 @@
         currentType: 'pop', //当前类型
         tabControlOffsetTop: 0, //OffsetTop
         isTabFixed: false, //是否吸顶
-        positionY: 0,
-        swipeImgLoad: false,
-        recommendImgLoad: false,
-        featureImgLoad: false
+        scrollTop: 0,
+        headerHeight: 0
+        
 
         
       };
@@ -109,35 +113,39 @@
         //请求数据传入当前类型
         this.getHomeGoods(this.currentType)
       },
-      swipeLsn () {
-        if (!this.swipeImgLoad) {
-          this.swipeImgLoad = true
-          //console.log('轮播图加载了')
-        }
-      },
-      recommendImgLsn () {
-        if (!this.recommendImgLoad) {
-          this.recommendImgLoad = true
-          //console.log('推荐图加载了')
-        }
-      },
-      featureImgLsn () {
-        if (!this.featureImgLoad) {
-          this.featureImgLoad = true
-          //console.log('本周流行图加载了')
-        }
-      },
       scrollMonitor () { //监听滚动位置
         window.addEventListener('scroll', () => {
-          let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-          this.positionY = scrollTop.toFixed(2)
+                 
+          //  let tabControl = document.getElementById("tabControl").offsetTop;
+          //  console.log(tabControl)
+          //  let pageHeight =  tabControl - document.documentElement.scrollTop;
+          //  console.log(pageHeight)
+          //  if(pageHeight<=45){
+          //      this.isTabFixed = true;
+          //   }else if(pageHeight>=45){
+          //      this.isTabFixed = false;
+          //   }
+  
+          // console.log(tabControl.offsetTop-document.documentElement.scrollTop)
+          this.tabControlOffsetTop = this.$refs.tabControl.$el.offsetTop;
+          console.log(this.tabControlOffsetTop)
           
           //console.log(this.positionY)
-          if (this.positionY >= this.tabControlOffsetTop) {
+          this.scrollTop = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
+          console.log(this.scrollTop)
+
+          this.headerHeight = window.getComputedStyle(this.$refs.header.$el).height.replace('px', '')
+          console.log(this.tabControlOffsetTop - this.scrollTop)
+
+          if (this.tabControlOffsetTop - this.scrollTop <= 40) {
             //console.log(this.positionY)
             //this.isTabFixed = true
             console.log('tab 显示')
+            this.isTabFixed = true
+          } else {
+            this.isTabFixed = false
           }
+
         })
       },
       offsetTop (elem) { //获取元素offsetTop
@@ -150,57 +158,57 @@
           return top; 
       }
     },
+    
     created () {
+      console.log("created")
       this.getHomeMultiData()
       this.getHomeGoods ('pop') //请求流行商品数据
       this.getHomeGoods ('new') //请求新款商品数据
       this.getHomeGoods ('sell') //请求精选商品数据
       //console.log('--home created')
-      
     },
+
     mounted () {
+      
+      this.scrollMonitor()
 
       this.$nextTick(() => {
-
         
-        let sp = window.getComputedStyle(swipe).height
-        let rp = window.getComputedStyle(recommend).height
-        let fp = window.getComputedStyle(featureView).height
-        
-        //console.log(window.getComputedStyle(featureView).height)
-        console.log(this.$refs.swipe.$el.offsetHeight)
-
       })
-      
-      if (!this.swipeImgLoad && !this.recommendImgLoad && !this.featureImgLoad) {
-        
-          //this.tabControlOffsetTop = this.offsetTop(tabControl)
-          
-          //console.log(this.tabControlOffsetTop)
-      }
-
-      this.scrollMonitor()
-      
     },
     activated () {
+      // console.log(tab)
       //console.log('--home activated')
-      this.positionY = sessionStorage.getItem('homeOffsetTop')
+      this.scrollTop = sessionStorage.getItem('homeOffsetTop')
       //console.log(this.positionY)
-      window.scrollTo(0, this.positionY)
+      window.scrollTo(0, this.scrollTop)
     },
     deactivated () {
       //console.log('--home deactivated')
       //console.log('离开时'+this.positionY)
-      sessionStorage.setItem('homeOffsetTop', this.positionY)
+      sessionStorage.setItem('homeOffsetTop', this.scrollTop)
     }
   };
 </script>
 
 <style lang="css" scoped>
-  .mint-swipe {
-    height: 200px;
-  }
-  .mint-swipe-item img {
-    width: 100%;
-  }
+    .mint-swipe {
+      height: 200px;
+      margin-top: 40px;
+    }
+
+    .mint-swipe-item img {
+      width: 100%;
+    }
+
+    .tabControlShown{
+        position: fixed;
+        left: 0;
+        top: 40px;
+        right: 0;
+        margin: auto;
+        z-index:999;
+
+
+    }
 </style>
