@@ -12,7 +12,10 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      tabbarShow: true
+    }
   },
   {
     path: '/category',
@@ -20,22 +23,34 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "category" */ 'views/category/Category.vue')
+    component: () => import(/* webpackChunkName: "category" */ 'views/category/Category.vue'),
+    meta: {
+      tabbarShow: true
+    }
   },
   {
     path: '/cart',
     name: 'Cart',
-    component: () => import(/* webpackChunkName: "cart" */ 'views/cart/Cart.vue')
+    component: () => import(/* webpackChunkName: "cart" */ 'views/cart/Cart.vue'),
+    meta: {
+      tabbarShow: true
+    }
   },
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import(/* webpackChunkName: "profile" */ 'views/profile/Profile.vue')
+    component: () => import(/* webpackChunkName: "profile" */ 'views/profile/Profile.vue'),
+    meta: {
+      tabbarShow: true
+    }
   },
   {
     path: '/goodsdetail',
     name: 'GoodsDetail',
-    component: () => import(/* webpackChunkName: "goodsdetail" */ 'business/goods/GoodsDetail.vue')
+    component: () => import(/* webpackChunkName: "goodsdetail" */ 'business/goods/GoodsDetail.vue'),
+    meta: {
+      tabbarShow: false
+    }
   }
 ]
 

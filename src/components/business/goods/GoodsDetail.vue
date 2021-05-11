@@ -1,8 +1,9 @@
 <template>
 
   <div id="detail">
+
       <detail-nav-bar ref="detailNavBar" class="detail-nav" 
-      @titleClick="titleClick" :currentIndex="currentIndex"></detail-nav-bar>
+        @titleClick="titleClick" :currentIndex="currentIndex"></detail-nav-bar>
       
     <!-- <scroll class="content" ref="scroll" @getScrollPosition="getScrollPosition" :probe-type="3"> -->
       <!-- 顶部轮播图 -->
@@ -22,8 +23,9 @@
     <!-- </scroll> -->
 
     <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
+
     <back-top @click.native="backClick" v-show="isShowBacktop"></back-top>
-    <!-- <toast msg="哈哈哈"></toast> -->
+    
   </div>
 
 </template>
@@ -89,29 +91,40 @@ import { mapActions } from 'vuex'
       ...mapActions(['addCart']),
       
       titleClick (index) {
-        //console.log('点击了'+index)
+        console.log('点击了'+index)
+        this.currentIndex = index
         //滚动到点击对应的元素位置
-        //this.$refs.scroll.scrollTo(0, -this.themOffsetTop[index], 200)
+        window.scrollTo(0, this.themOffsetTop[index])
       },
-      // getScrollPosition (position) {
-      //   //console.log(position)
-      //   //[0, 16042, 17316, 17550]
-      //   //滚动到某个位置，要选中对应的title
-      //   let length = this.themOffsetTop.length
-      //   //console.log(length)
-      //   for (let i = 0; i < length-1; i++) {
-      //     let ipos = this.themOffsetTop[i]
-      //     if(position >= ipos && position < this.themOffsetTop[i+1]) {
-      //       if(this.currentIndex !== i) {
-      //         this.currentIndex = i
-      //         console.log(this.currentIndex)
-      //       }
-      //       break
-      //     }
-      //   }
-      //   /*滚动超过1000显示回到顶部按钮*/
-      //   this.isShowBacktop = (position) > 1000 
-      // },
+      scrollLsn () {
+        window.addEventListener('scroll', this.scrolling)
+      },
+      scrolling () {
+        this.themOffsetTop = []
+        this.themOffsetTop.push(0)
+        this.themOffsetTop.push(this.$refs.detailParamInfo.$el.offsetTop)
+        this.themOffsetTop.push(this.$refs.detailCommentInfo.$el.offsetTop)
+        this.themOffsetTop.push(this.$refs.goodsList.$el.offsetTop)
+        this.themOffsetTop.push(Number.MAX_VALUE)
+        console.log(this.themOffsetTop)
+        //[0, 16042, 17316, 17550]
+        //滚动到某个位置，要选中对应的title
+        let position = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
+        let length = this.themOffsetTop.length
+        //console.log(position)
+        for (let i = 0; i < length-1; i++) {
+          let ipos = this.themOffsetTop[i]
+          if(position >= ipos && position < this.themOffsetTop[i+1]) {
+            if(this.currentIndex !== i) {
+              this.currentIndex = i
+              //console.log(this.currentIndex)
+            }
+            break
+          }
+        }
+        /*滚动超过1000显示回到顶部按钮*/
+        this.isShowBacktop = (position) > 1000 
+      },
       addToCart () {
         //console.log('点击了添加')
         //1.收集购物车需要展示的数据
@@ -132,11 +145,10 @@ import { mapActions } from 'vuex'
           //console.log(this.$toast)
           Toast(res)
         })
-        
-        
       }
     },
     created(){
+      this.scrollLsn()
       //保存路由传递过来的参数
       this.iid = this.$route.query.iid
       //console.log(this.iid)
@@ -175,15 +187,15 @@ import { mapActions } from 'vuex'
       // this.$bus.$on('goodsImgLoad', this.goodsImgLsn)
       // console.log('mounted')
       //获取4个菜单对应元素的offsetTop(并进行了防抖操作)
-      this.getThemOffsetTop = debounce(() => {
-          this.themOffsetTop = []
-          this.themOffsetTop.push(0)
-          this.themOffsetTop.push(this.$refs.detailParamInfo.$el.offsetTop)
-          this.themOffsetTop.push(this.$refs.detailCommentInfo.$el.offsetTop)
-          this.themOffsetTop.push(this.$refs.goodsList.$el.offsetTop)
-          this.themOffsetTop.push(Number.MAX_VALUE)
-          //console.log(this.themOffsetTop)
-      })
+      // this.getThemOffsetTop = debounce(() => {
+      //     this.themOffsetTop = []
+      //     this.themOffsetTop.push(0)
+      //     this.themOffsetTop.push(this.$refs.detailParamInfo.$el.offsetTop)
+      //     this.themOffsetTop.push(this.$refs.detailCommentInfo.$el.offsetTop)
+      //     this.themOffsetTop.push(this.$refs.goodsList.$el.offsetTop)
+      //     this.themOffsetTop.push(Number.MAX_VALUE)
+      //     //console.log(this.themOffsetTop)
+      // })
       
     },
     updated() {
@@ -199,13 +211,14 @@ import { mapActions } from 'vuex'
 <style lang="css" scoped>
   #detail {
     height: 100vh;
-    position: relative;
+    /* position: relative; */
     z-index: 9;
     background-color: #fff;
   }
   .detail-nav {
-    position: relative;
-    z-index: 9;
+    position: fixed;
+    top: 0;
+    z-index: 1;
     background-color: #fff;
   }
 

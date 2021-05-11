@@ -36,10 +36,5 @@
 </script>
 
 <style scoped>
-  .mint-swipe {
-    height: 200px;
-  }
-  .mint-swipe-item img {
-    width: 100%;
-  }
+  
 </style>

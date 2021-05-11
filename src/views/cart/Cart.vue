@@ -7,6 +7,7 @@
     <mt-header fixed title="购物街"></mt-header>
     <cart-list></cart-list>
     <cart-bottom></cart-bottom>
+    
   </div>
 
 </template>

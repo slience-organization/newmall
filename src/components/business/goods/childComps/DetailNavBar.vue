@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <nav-bar>
       <div slot="left" class="back" @click="backClick">
@@ -10,6 +11,7 @@
       </div>
     </nav-bar>
   </div>
+
 </template>
 
 <script>
@@ -30,7 +32,6 @@ export default {
   },
   methods: {
     titleClick (index) {
-      this.currentIndex = index
       //console.log('点击了'+this.currentIndex)
       this.$emit('titleClick', index)
     },

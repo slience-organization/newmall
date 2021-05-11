@@ -64,8 +64,6 @@
         tabControlOffsetTop: 0, //OffsetTop
         isTabFixed: false, //是否吸顶
         scrollTop: 0,
-        headerHeight: 0
-        
 
         
       };
@@ -113,102 +111,59 @@
         //请求数据传入当前类型
         this.getHomeGoods(this.currentType)
       },
-      scrollMonitor () { //监听滚动位置
-        window.addEventListener('scroll', () => {
-                 
-          //  let tabControl = document.getElementById("tabControl").offsetTop;
-          //  console.log(tabControl)
-          //  let pageHeight =  tabControl - document.documentElement.scrollTop;
-          //  console.log(pageHeight)
-          //  if(pageHeight<=45){
-          //      this.isTabFixed = true;
-          //   }else if(pageHeight>=45){
-          //      this.isTabFixed = false;
-          //   }
-  
-          // console.log(tabControl.offsetTop-document.documentElement.scrollTop)
-          this.tabControlOffsetTop = this.$refs.tabControl.$el.offsetTop;
-          console.log(this.tabControlOffsetTop)
-          
-          //console.log(this.positionY)
-          this.scrollTop = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
-          console.log(this.scrollTop)
-
-          this.headerHeight = window.getComputedStyle(this.$refs.header.$el).height.replace('px', '')
-          console.log(this.tabControlOffsetTop - this.scrollTop)
-
-          if (this.tabControlOffsetTop - this.scrollTop <= 40) {
-            //console.log(this.positionY)
-            //this.isTabFixed = true
-            console.log('tab 显示')
-            this.isTabFixed = true
-          } else {
-            this.isTabFixed = false
-          }
-
-        })
+      scrollLsn () { //监听滚动位置
+        window.addEventListener('scroll', this.scrolling)
       },
-      offsetTop (elem) { //获取元素offsetTop
-          var top = elem.offsetTop; 
-          var parent = elem.offsetParent; 
-          while(parent){ 
-              top += parent.offsetTop; 
-              parent = parent.offsetParent; 
-          }
-          return top; 
+      scrolling () {
+        this.tabControlOffsetTop = this.$refs.tabControl.$el.offsetTop;
+        //console.log(this.tabControlOffsetTop)
+        this.scrollTop = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
+        //console.log(this.scrollTop)
+        if (this.tabControlOffsetTop - this.scrollTop <= 40) {
+          //console.log('tab 显示')
+          this.isTabFixed = true
+        } else {
+          this.isTabFixed = false
+        }
       }
     },
     
     created () {
-      console.log("created")
+      //console.log("created")
       this.getHomeMultiData()
       this.getHomeGoods ('pop') //请求流行商品数据
       this.getHomeGoods ('new') //请求新款商品数据
       this.getHomeGoods ('sell') //请求精选商品数据
       //console.log('--home created')
     },
-
     mounted () {
-      
-      this.scrollMonitor()
-
+      this.scrollLsn()
       this.$nextTick(() => {
         
       })
     },
     activated () {
-      // console.log(tab)
       //console.log('--home activated')
+      this.scrollLsn()
       this.scrollTop = sessionStorage.getItem('homeOffsetTop')
       //console.log(this.positionY)
       window.scrollTo(0, this.scrollTop)
     },
     deactivated () {
       //console.log('--home deactivated')
-      //console.log('离开时'+this.positionY)
       sessionStorage.setItem('homeOffsetTop', this.scrollTop)
+      window.removeEventListener('scroll', this.scrollLsn)
     }
   };
 </script>
 
 <style lang="css" scoped>
-    .mint-swipe {
-      height: 200px;
-      margin-top: 40px;
-    }
-
-    .mint-swipe-item img {
-      width: 100%;
-    }
-
-    .tabControlShown{
-        position: fixed;
-        left: 0;
-        top: 40px;
-        right: 0;
-        margin: auto;
-        z-index:999;
-
-
-    }
+  .tabControlShown{
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 40px;
+    z-index: 1;
+  }
 </style>

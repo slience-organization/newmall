@@ -32,7 +32,8 @@
 
 <style  scoped>
   .cart-container {
-    height: calc(100vh - 49px - 49px)
+    margin-top: 40px;
+    height: calc(100vh - 40px - 49px)
   }
   .cart-list {
     height: 100%;

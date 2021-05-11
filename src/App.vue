@@ -3,10 +3,11 @@
   <div id="app">
 
     <keep-alive exclude="GoodsDetail">
-      <router-view></router-view>
+      <router-view ></router-view>
     </keep-alive>
 
-    <main-tabbar></main-tabbar>
+
+    <main-tabbar v-show="this.$route.meta.tabbarShow"></main-tabbar>
 
   </div>
 

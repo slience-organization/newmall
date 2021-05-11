@@ -22,6 +22,13 @@
 .mint-header {
   background-color: var(--color-tint);
 }
+.mint-swipe {
+  height: 200px;
+  margin-top: 40px;
+}
+.mint-swipe-item img {
+  width: 100%;
+}
 .mint-tabbar > .mint-tab-item.is-selected {
   background-color: #fafafa;
   color: var(--color-tint);
