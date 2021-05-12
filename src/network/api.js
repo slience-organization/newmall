@@ -67,3 +67,18 @@ export function getRecommend() {
   })
 }
 
+//获取分类数据
+export function getCategory () {
+  return request({
+    url: '/category'
+  })
+}
+export function getSubcategory (maitKey) {
+  return request({
+    url: '/subcategory',
+    params: {
+      maitKey
+    }
+  })
+}
+
