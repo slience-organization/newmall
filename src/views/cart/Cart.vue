@@ -31,11 +31,8 @@
       }
     },
     watch:{},
-    computed:{ //mapGetters辅助函数将vueX中getters直接映射到组件compued中
-      //...mapGetters(['cartLength'])
-      ...mapGetters({
-        cLength: 'cartLength'
-      })
+    computed:{ 
+      
     },
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  
     <div class="cart-item">
       <div class="item-selector">
         <check-button @click.native="checkedChange" :selected="product.checked"></check-button>
@@ -11,12 +11,15 @@
         <div class="item-title">{{product.title}}</div>
         <div class="item-desc">{{product.desc}}</div>
         <div class="info-bottom">
-          <div class="item-price left">{{product.price}}</div>
-          <div class="item-count right">x{{product.count}}</div>
+          <div class="item-price">{{product.price}}</div>
+          
+          <div class="item-reduce" @click="reduceClick">-</div>
+          <div class="item-count">x{{product.count}}</div>
+          <div class="item-add" @click="addClick">+</div>
         </div>
       </div>
     </div>
-  </div>
+  
 </template>
 
 <script>
@@ -43,6 +46,20 @@ export default {
     checkedChange () {
       console.log('点击了')
       this.product.checked = !this.product.checked
+    },
+    addClick () {
+      console.log('自增')
+      this.$store.commit({
+        type: 'increment',
+        iid: this.product.iid
+      })
+    },
+    reduceClick () {
+      console.log('递减')
+      this.$store.commit({
+        type: 'decrement', 
+        iid: this.product.iid
+      })
     }
   }
 }
@@ -94,6 +111,8 @@ export default {
   }
 
   .info-bottom {
+    display: flex;
+    justify-content: space-between;
     margin-top: 10px;
     position: absolute;
     bottom: 10px;
@@ -103,6 +122,7 @@ export default {
 
   .info-bottom .item-price {
     color: orangered;
+    width: 50%;
   }
 
 </style>

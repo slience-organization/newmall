@@ -16,6 +16,22 @@ export default new Vuex.Store({
     addToCart (state, product) {
       product.checked = true
       state.cartList.push(product)
+    },
+    increment (state, payload) {
+      let product = state.cartList.find((item) => {
+        return payload.iid === item.iid
+      })
+      if (product) {
+        product.count ++
+      }
+    },
+    decrement (state, payload) {
+      let product = state.cartList.find((item) => {
+        return item.iid === payload.iid
+      })
+      if (product.count > 1) {
+        product.count --
+      }
     }
   },
   actions: {
@@ -27,7 +43,7 @@ export default new Vuex.Store({
         })
         if(oldProduct){ //有就把数量加1
           context.commit('addCounter', oldProduct)
-          resolve('当前商品数量加1')
+          resolve('又加了1件哦')
         }else{ //没有就添加到购物车，并且新添加一个count把数量设为1
           product.count = 1
           context.commit('addToCart', product)

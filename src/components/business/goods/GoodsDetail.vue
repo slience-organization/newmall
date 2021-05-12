@@ -106,7 +106,7 @@ import { mapActions } from 'vuex'
         this.themOffsetTop.push(this.$refs.detailCommentInfo.$el.offsetTop)
         this.themOffsetTop.push(this.$refs.goodsList.$el.offsetTop)
         this.themOffsetTop.push(Number.MAX_VALUE)
-        console.log(this.themOffsetTop)
+        //console.log(this.themOffsetTop)
         //[0, 16042, 17316, 17550]
         //滚动到某个位置，要选中对应的title
         let position = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
