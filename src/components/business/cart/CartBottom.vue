@@ -51,10 +51,10 @@
         }
       },
       accountClick () {
-        if (!this.selectAll) {
-          Toast('请选择商品')
+        if (!this.selectAll && this.cartLength === 0) {
+          Toast({message:'请选择商品', duration:800})
         } else {
-          Toast('去结算啦')
+          Toast({message:'飞到外星去了?', duration:800})
         }
       }
     }

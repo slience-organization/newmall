@@ -13,11 +13,11 @@
       <!-- 店铺信息 -->
       <detail-shop-info :shop="shop"></detail-shop-info>
       <!-- 穿着效果 -->
-      <detail-goods-info :detailInfo="detailInfo"></detail-goods-info>
+      <detail-goods-info id="detailInfo" :detailInfo="detailInfo"></detail-goods-info>
       <!-- 商品参数信息 -->
       <detail-param-info ref="detailParamInfo" :paramInfo="paramInfo"></detail-param-info>
       <!-- 商品评论信息 -->
-      <detail-comment-info ref="detailCommentInfo" :commentInfo="commentInfo"></detail-comment-info>
+      <detail-comment-info id="detailCommentInfo" ref="detailCommentInfo" :commentInfo="commentInfo"></detail-comment-info>
       <!-- 商品推荐信息,复用goods-list -->
       <goods-list ref="goodsList" :goods="recommendList"></goods-list>
     <!-- </scroll> -->
@@ -100,12 +100,6 @@ import { mapActions } from 'vuex'
         window.addEventListener('scroll', this.scrolling)
       },
       scrolling () {
-        this.themOffsetTop = []
-        this.themOffsetTop.push(0)
-        this.themOffsetTop.push(this.$refs.detailParamInfo.$el.offsetTop)
-        this.themOffsetTop.push(this.$refs.detailCommentInfo.$el.offsetTop)
-        this.themOffsetTop.push(this.$refs.goodsList.$el.offsetTop)
-        this.themOffsetTop.push(Number.MAX_VALUE)
         //console.log(this.themOffsetTop)
         //[0, 16042, 17316, 17550]
         //滚动到某个位置，要选中对应的title
@@ -134,7 +128,6 @@ import { mapActions } from 'vuex'
         product.title = this.goods.title
         product.desc = this.detailInfo.desc
         product.price = this.goods.realPrice
-        
         //2.将商品添加到购物车
         //通过store.dispatch分发Action
         // this.$store.dispatch('addCart', product).then(res => {
@@ -143,7 +136,7 @@ import { mapActions } from 'vuex'
         //通过mapAction辅助函数直接调用映射的方法
         this.addCart(product).then(res => {
           //console.log(this.$toast)
-          Toast(res)
+          Toast({message:res, duration:800})
         })
       }
     },
@@ -196,6 +189,19 @@ import { mapActions } from 'vuex'
       //     this.themOffsetTop.push(Number.MAX_VALUE)
       //     //console.log(this.themOffsetTop)
       // })
+      this.$nextTick(()=> {
+        this.themOffsetTop = []
+        this.themOffsetTop.push(0)
+        this.themOffsetTop.push(this.$refs.detailParamInfo.$el.offsetTop)
+        this.themOffsetTop.push(this.$refs.detailCommentInfo.$el.offsetTop)
+        this.themOffsetTop.push(this.$refs.goodsList.$el.offsetTop)
+        this.themOffsetTop.push(Number.MAX_VALUE)
+        //console.log(this.$refs.detailCommentInfo.$el.offsetTop)
+        let my_div = document.getElementById("detailInfo");
+        let h = window.getComputedStyle(my_div, null).height
+        console.log(h)
+
+      })
       
     },
     updated() {

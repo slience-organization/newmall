@@ -17,21 +17,11 @@ export default new Vuex.Store({
       product.checked = true
       state.cartList.push(product)
     },
-    increment (state, payload) {
-      let product = state.cartList.find((item) => {
-        return payload.iid === item.iid
-      })
-      if (product) {
-        product.count ++
-      }
+    increase (state, product) {
+      product.count ++
     },
-    decrement (state, payload) {
-      let product = state.cartList.find((item) => {
-        return item.iid === payload.iid
-      })
-      if (product.count > 1) {
-        product.count --
-      }
+    decrease (state, product) {
+      product.count --
     }
   },
   actions: {
@@ -48,6 +38,32 @@ export default new Vuex.Store({
           product.count = 1
           context.commit('addToCart', product)
           resolve('添加了新的商品')
+        }
+      })
+    },
+    decrement (context, payload) {
+      return new Promise((resolve, reject)=> {
+        let product = context.state.cartList.find((item) => {
+          return item.iid === payload.iid
+        })
+        if (product.count > 1) {
+          context.commit('decrease', product)
+          resolve(product.count)
+        } else {
+          reject(product.count)
+        }
+      })
+    },
+    increment (context, payload) {
+      return new Promise((resolve, reject)=> {
+        let product = context.state.cartList.find((item) => {
+          return payload.iid === item.iid
+        })
+        if (product) {
+          context.commit('increase', product)
+          resolve(product.count)
+        } else {
+          reject(product.count)
         }
       })
     }

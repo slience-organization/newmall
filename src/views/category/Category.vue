@@ -97,6 +97,7 @@
   .right {
     position: fixed;
     top: 40px;
+    bottom: 55px;
     right: 0;
     width: 75%;
     display: flex;

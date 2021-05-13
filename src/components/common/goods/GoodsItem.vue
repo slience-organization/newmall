@@ -55,7 +55,7 @@ export default {
           iid: this.goodsItem.iid
         }
       })
-      console.log(this.goodsItem.iid)
+      //console.log(this.goodsItem.iid)
     }
   }
 }

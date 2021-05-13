@@ -1,9 +1,7 @@
 <template>
 
   <div id="cart">
-    <!-- <nav-bar class="car-nav">
-      <div slot="center">购物车({{cLength}})</div>
-    </nav-bar> -->
+    
     <mt-header fixed title="购物街"></mt-header>
     <cart-list></cart-list>
     <cart-bottom></cart-bottom>
@@ -14,7 +12,6 @@
 
 <script>
   import { Header, Toast } from "mint-ui";
-  import {mapGetters} from 'vuex'
   import CartBottom from 'business/cart/CartBottom.vue'
   import CartList from 'business/cart/CartList.vue'
   export default {
@@ -29,17 +26,10 @@
     data(){
       return {
       }
-    },
-    watch:{},
-    computed:{ 
-      
-    },
+    }
   }
 </script>
   
 <style lang="css" scoped>
-  .car-nav {
-    background-color: var(--color-tint);
-    color: #fff;
-  }
+  
 </style>

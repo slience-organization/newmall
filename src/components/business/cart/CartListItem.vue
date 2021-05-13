@@ -23,9 +23,10 @@
 </template>
 
 <script>
+import {Toast} from 'mint-ui'
 import CheckButton from './CheckButton.vue'
 export default {
-  components: { CheckButton },
+  components: { CheckButton, Toast },
   data () {
     return {
       selected: {
@@ -44,21 +45,29 @@ export default {
   },
   methods: {
     checkedChange () {
-      console.log('点击了')
+      //console.log('点击了')
       this.product.checked = !this.product.checked
     },
     addClick () {
-      console.log('自增')
-      this.$store.commit({
+      this.$store.dispatch({
         type: 'increment',
         iid: this.product.iid
+      }).then((res) => {
+        //console.log('添加后:' + res)
+      }).catch((res)=> {
+        //console.log('哎呦，出错了!')
       })
     },
     reduceClick () {
-      console.log('递减')
-      this.$store.commit({
+      //异步操作，使用store.dispatch分发action
+      this.$store.dispatch({
         type: 'decrement', 
         iid: this.product.iid
+      }).then((res)=> {
+        //console.log('减一后:' + res)
+      }).catch((res)=> {
+        Toast({message:'至少购买一件哦！', duration:800})
+        //console.log('直接进入catch')
       })
     }
   }
@@ -123,6 +132,11 @@ export default {
   .info-bottom .item-price {
     color: orangered;
     width: 50%;
+  }
+  .info-bottom .item-count {
+    background-color: lightgray;
+    padding: 2px 10px;
+    border-radius: 10%;
   }
 
 </style>

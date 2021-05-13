@@ -107,7 +107,7 @@
         })
       },
       loadBottom () {
-        Toast('加载更多')
+        //Toast('加载更多')
         //请求数据传入当前类型
         this.getHomeGoods(this.currentType)
       },
