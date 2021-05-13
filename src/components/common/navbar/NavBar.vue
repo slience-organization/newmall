@@ -38,6 +38,9 @@ export default {
   .left, .right {
     width: 25%;
   }
+  .left img {
+    margin-top: 12px;
+  }
   .center {
     flex: 1;
   }

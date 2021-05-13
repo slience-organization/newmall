@@ -27,7 +27,7 @@ export default {
   },
   data () {
     return {
-      titles: ['商品', '参数', '评论', '推荐',],
+      titles: ['商品', '参数', '评论', '推荐',]
     }
   },
   methods: {
@@ -53,7 +53,4 @@ export default {
   .active {
     color: var(--color-high-text);
   }
-   .back img{
-     margin-top: 13px;
-   }
 </style>

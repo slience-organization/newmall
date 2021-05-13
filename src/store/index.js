@@ -7,6 +7,14 @@ export default new Vuex.Store({
   state: {
     cartList: []
   },
+  getters: {
+    cartList (state) {
+      return state.cartList
+    },
+    cartLength (state) {
+      return state.cartList.length
+    }
+  },
   mutations: { 
     //mutations唯一的目的就是修改state中状态
     //且mutations的每个方法的功能尽可能要单一
@@ -66,14 +74,6 @@ export default new Vuex.Store({
           reject(product.count)
         }
       })
-    }
-  },
-  getters: {
-    cartList (state) {
-      return state.cartList
-    },
-    cartLength (state) {
-      return state.cartList.length
     }
   },
   modules: {

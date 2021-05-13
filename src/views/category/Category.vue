@@ -22,20 +22,16 @@
       </div>
     </div>
 
-    <!-- <category-content :categoryList="categoryList" :rightinfolist="rightinfolist" @cateClick="cateClick"></category-content> -->
   </div>
 
 </template>
 
 <script>
-  import { Navbar, TabItem , Button, Cell  } from 'mint-ui';
+  import { Cell  } from 'mint-ui';
   import { getCategory, getSubcategory } from 'network/api'
-  //import CategoryContent from 'business/category/categoryContent.vue'
   
   export default {
-    
     components: {
-      //CategoryContent, 
       Cell
     },
     props: {},

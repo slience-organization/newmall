@@ -2,27 +2,25 @@
 
   <div id="detail">
 
-      <detail-nav-bar ref="detailNavBar" class="detail-nav" 
-        @titleClick="titleClick" :currentIndex="currentIndex"></detail-nav-bar>
-      
-    <!-- <scroll class="content" ref="scroll" @getScrollPosition="getScrollPosition" :probe-type="3"> -->
-      <!-- 顶部轮播图 -->
-      <detail-swiper :topImages="topImages"></detail-swiper>
-      <!-- 详情标题，价格 -->
-      <detail-base-info :goods="goods"></detail-base-info>
-      <!-- 店铺信息 -->
-      <detail-shop-info :shop="shop"></detail-shop-info>
-      <!-- 穿着效果 -->
-      <detail-goods-info id="detailInfo" :detailInfo="detailInfo"></detail-goods-info>
-      <!-- 商品参数信息 -->
-      <detail-param-info ref="detailParamInfo" :paramInfo="paramInfo"></detail-param-info>
-      <!-- 商品评论信息 -->
-      <detail-comment-info id="detailCommentInfo" ref="detailCommentInfo" :commentInfo="commentInfo"></detail-comment-info>
-      <!-- 商品推荐信息,复用goods-list -->
-      <goods-list ref="goodsList" :goods="recommendList"></goods-list>
-    <!-- </scroll> -->
+    <detail-nav-bar ref="detailNavBar" class="detail-nav" 
+      @titleClick="titleClick" :currentIndex="currentIndex"></detail-nav-bar>
+    
+    <!-- 顶部轮播图 -->
+    <detail-swiper :topImages="topImages"></detail-swiper>
+    <!-- 详情标题，价格 -->
+    <detail-base-info :goods="goods"></detail-base-info>
+    <!-- 店铺信息 -->
+    <detail-shop-info :shop="shop"></detail-shop-info>
+    <!-- 穿着效果 -->
+    <detail-goods-info id="detailInfo" :detailInfo="detailInfo"></detail-goods-info>
+    <!-- 商品参数信息 -->
+    <detail-param-info ref="detailParamInfo" :paramInfo="paramInfo"></detail-param-info>
+    <!-- 商品评论信息 -->
+    <detail-comment-info id="detailCommentInfo" ref="detailCommentInfo" :commentInfo="commentInfo"></detail-comment-info>
+    <!-- 商品推荐信息,复用goods-list -->
+    <goods-list ref="goodsList" :goods="recommendList"></goods-list>
 
-    <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
+    <detail-bottom-bar @addToCart="addToCart" @goBuy="goBuy" @leftBar="leftBar"></detail-bottom-bar>
 
     <back-top @click.native="backClick" v-show="isShowBacktop"></back-top>
     
@@ -31,7 +29,7 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui'
+import { Header, Toast } from 'mint-ui'
 import {getGoodsDetail, Goods, Shop, GoodsParam, getRecommend} from 'network/api'
 
 import DetailNavBar from './childComps/DetailNavBar.vue'
@@ -43,12 +41,10 @@ import DetailParamInfo from './childComps/DetailParamInfo.vue'
 import DetailCommentInfo from './childComps/DetailCommentInfo.vue'
 import DetailBottomBar from './childComps/DetailBottomBar.vue'
 import GoodsList from 'common/goods/GoodsList.vue'
-//import Scroll from 'components/common/scroll/Scroll.vue'
 import {debounce} from 'common/Utils'
 //import {goodsImgLsnMixin} from 'common/Mixin'
 import BackTop from 'common/backTop/BackTop.vue'
 import { mapActions } from 'vuex'
-//import Toast from '../../components/common/toast/Toast.vue'
 
   export default {
     name: 'GoodsDetail',
@@ -57,13 +53,13 @@ import { mapActions } from 'vuex'
       DetailSwiper,
       DetailBaseInfo,
       DetailShopInfo,
-      //Scroll,
       DetailGoodsInfo,
       DetailParamInfo,
       DetailCommentInfo,
       GoodsList,
       DetailBottomBar,
       BackTop,
+      Header,
       Toast
     },
     //mixins: [goodsImgLsnMixin],
@@ -94,7 +90,7 @@ import { mapActions } from 'vuex'
         console.log('点击了'+index)
         this.currentIndex = index
         //滚动到点击对应的元素位置
-        window.scrollTo(0, this.themOffsetTop[index])
+        //window.scrollTo(0, this.themOffsetTop[index])
       },
       scrollLsn () {
         window.addEventListener('scroll', this.scrolling)
@@ -130,18 +126,23 @@ import { mapActions } from 'vuex'
         product.price = this.goods.realPrice
         //2.将商品添加到购物车
         //通过store.dispatch分发Action
-        // this.$store.dispatch('addCart', product).then(res => {
-        //   console.log(res)
-        // })
+        //this.$store.dispatch('addCart', product).then(res => {console.log(res)})
         //通过mapAction辅助函数直接调用映射的方法
         this.addCart(product).then(res => {
-          //console.log(this.$toast)
           Toast({message:res, duration:800})
         })
+      },
+      goBuy () {
+        Toast({message:'飞到外星去了！', duration:800})
+      },
+      leftBar () {
+        Toast({message:'飞到外星去了！', duration:800})
+      },
+      backClick () {
+        window.scrollTo(0, 0)
       }
     },
     created(){
-      this.scrollLsn()
       //保存路由传递过来的参数
       this.iid = this.$route.query.iid
       //console.log(this.iid)
@@ -173,6 +174,7 @@ import { mapActions } from 'vuex'
       })
     },
     mounted(){//以下注释代码混入到mixin中了
+      this.scrollLsn()
       // let scrollRefresh = debounce(this.$refs.scroll.refresh(), 100)
       // this.goodsImgLsn = () => {
       //   scrollRefresh
@@ -190,6 +192,8 @@ import { mapActions } from 'vuex'
       //     //console.log(this.themOffsetTop)
       // })
       this.$nextTick(()=> {
+        console.log(this.$refs.detailCommentInfo.$el.offsetTop)
+        //console.log(position)
         this.themOffsetTop = []
         this.themOffsetTop.push(0)
         this.themOffsetTop.push(this.$refs.detailParamInfo.$el.offsetTop)
@@ -198,11 +202,9 @@ import { mapActions } from 'vuex'
         this.themOffsetTop.push(Number.MAX_VALUE)
         //console.log(this.$refs.detailCommentInfo.$el.offsetTop)
         let my_div = document.getElementById("detailInfo");
-        let h = window.getComputedStyle(my_div, null).height
-        console.log(h)
-
+        //let h = window.getComputedStyle(my_div, null).height
+        //console.log(h)
       })
-      
     },
     updated() {
       

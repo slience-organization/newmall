@@ -25,6 +25,7 @@
     props:{},
     data(){
       return {
+        
       }
     }
   }

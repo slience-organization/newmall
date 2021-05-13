@@ -1,6 +1,6 @@
 <template>
   <div class="bottom-bar">
-    <div class="bar-item bar-left">
+    <div class="bar-item bar-left" @click="leftBar">
       <div>
         <i class="icon service"></i>
         <span class="text">客服</span>
@@ -16,7 +16,7 @@
     </div>
     <div class="bar-item bar-right">
       <div class="cart" @click="addToCart">加入购物车</div>
-      <div class="buy">购买</div>
+      <div class="buy" @click="goBuy">购买</div>
     </div>
   </div>
 </template>
@@ -32,6 +32,12 @@ export default {
     addToCart () {
       //console.log('点击了添加')
       this.$emit('addToCart')
+    },
+    goBuy () {
+      this.$emit('goBuy')
+    },
+    leftBar () {
+      this.$emit('leftBar')
     }
   },
 }
