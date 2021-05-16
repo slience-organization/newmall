@@ -43,7 +43,7 @@
     },
     methods: {
       allClick () {
-        console.log('全选')
+        //console.log('全选')
         if (this.selectAll) {
           this.cartList.forEach(element => element.checked = false);
         } else {

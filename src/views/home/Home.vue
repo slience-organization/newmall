@@ -30,7 +30,7 @@
   import { Header, Swipe, SwipeItem, Loadmore, Toast, } from "mint-ui";
 
 
-  import {getHomeMultiData, getHomeGoods} from 'network/api'
+  import {_getHomeMultiData, _getHomeGoods} from 'network/api'
   import Recommend from 'business/home/Recommend.vue';
   import FeatureView from 'business/home/FeatureView.vue';
   import TabControl from 'business/home/TabControl.vue';
@@ -90,7 +90,7 @@
         this.saveCurrentIndex = index
       },
       getHomeMultiData (){ //获取轮播图和推荐的数据
-        getHomeMultiData ().then (res => {
+        _getHomeMultiData ().then (res => {
           this.banners = res.data.data.banner.list;
           this.recommends = res.data.data.recommend.list;
           //console.log(res)
@@ -100,7 +100,7 @@
       getHomeGoods (type) { //传入类型和页码
         const page = this.goods[type].page + 1
         //console.log(page)
-        getHomeGoods (type,page).then (res => {
+        _getHomeGoods (type,page).then (res => {
           //console.log(res)
           this.goods[type].list.push(...res.data.data.list) //(...)ES6展开运算符:依次取出数组的每个元素
           this.goods[type].page += 1
@@ -138,9 +138,6 @@
     },
     mounted () {
       this.scrollLsn()
-      this.$nextTick(() => {
-        
-      })
     },
     activated () {
       //console.log('--home activated')

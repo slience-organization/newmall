@@ -28,7 +28,7 @@
 
 <script>
   import { Cell  } from 'mint-ui';
-  import { getCategory, getSubcategory } from 'network/api'
+  import { _getCategory, _getSubcategory } from 'network/api'
   
   export default {
     components: {
@@ -47,14 +47,14 @@
     computed: {},
     methods: {
       getCategory () {
-        getCategory ().then((res) => {
+        _getCategory ().then((res) => {
           //console.log(res)
           this.categoryList = res.data.data.category.list
           //console.log(this.categoryList)
         })
       },
       getSubcategory (maitKey) {
-        getSubcategory (this.maitKey).then((res) => {
+        _getSubcategory (this.maitKey).then((res) => {
           this.rightinfolist = res.data.data.list
           //console.log(this.rightinfolist)
         })

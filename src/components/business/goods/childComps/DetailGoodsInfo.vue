@@ -1,28 +1,27 @@
 <template>
-  <div v-if="Object.keys(detailInfo).length !== 0" class="goods-info">
+  <div v-if="Object.keys(detailGoodsInfo).length !== 0" class="goods-info">
     <div class="info-desc clear-fix">
       <div class="start"></div>
-      <div class="desc">{{detailInfo.desc}}</div>
+      <div class="desc">{{detailGoodsInfo.desc}}</div>
       <div class="end"></div>
     </div>
-    <div class="info-key">{{detailInfo.detailImage[0].key}}</div>
+    <div class="info-key">{{detailGoodsInfo.detailImage[0].key}}</div>
     <div class="info-list">
-      <img v-for="(item, index) in detailInfo.detailImage[0].list" v-lazy="item" :key="index" alt="" @load="detailImgLoad">
+      <img v-for="(item, index) in detailGoodsInfo.detailImage[0].list" v-lazy="item" :key="index" alt="">
     </div>
   </div>
 </template>
 
 <script>
 	export default {
+
 		name: "DetailGoodsInfo",
     props: {
-      detailInfo: {
-        type: Object
-      }
-    },
-    methods: {
-      detailImgLoad () {
-        //console.log('图片加载')
+      detailGoodsInfo: {
+        type: Object,
+        default () {
+          return {}
+        }
       }
     }
 	}

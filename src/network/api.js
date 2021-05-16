@@ -3,14 +3,14 @@ import {request} from './request';
 
 
 //获取轮播图和推荐的数据
-export function getHomeMultiData () {
+export function _getHomeMultiData () {
   return request ({
     url: '/home/multidata'
   })
 }
 
 //获取商品数据
-export function getHomeGoods (type, page) {
+export function _getHomeGoods (type, page) {
   return request ({
     url: '/home/data',
     params: { type, page }
@@ -18,7 +18,7 @@ export function getHomeGoods (type, page) {
 }
 
 //获取商品详情数据
-export function getGoodsDetail (iid) {
+export function _getGoodsDetail (iid) {
   return request ({
     url: '/detail',
     params: { iid }
@@ -61,19 +61,19 @@ export class GoodsParam {
   }
 }
 //获取详情页的商品推荐
-export function getRecommend() {
+export function _getRecommend() {
   return request ({
     url: '/recommend'
   })
 }
 
 //获取分类数据
-export function getCategory () {
+export function _getCategory () {
   return request({
     url: '/category'
   })
 }
-export function getSubcategory (maitKey) {
+export function _getSubcategory (maitKey) {
   return request({
     url: '/subcategory',
     params: {
