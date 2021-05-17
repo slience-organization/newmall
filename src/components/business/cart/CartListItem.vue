@@ -50,7 +50,7 @@ export default {
     },
     addClick () {
       this.$store.dispatch({
-        type: 'increment',
+        type: '_increment',
         iid: this.product.iid
       }).then((res) => {
         //console.log('添加后:' + res)
@@ -61,7 +61,7 @@ export default {
     reduceClick () {
       //异步操作，使用store.dispatch分发action
       this.$store.dispatch({
-        type: 'decrement', 
+        type: '_decrement', 
         iid: this.product.iid
       }).then((res)=> {
         //console.log('减一后:' + res)

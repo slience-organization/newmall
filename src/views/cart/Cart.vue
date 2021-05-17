@@ -3,14 +3,14 @@
   <div id="cart">
     
     <mt-header fixed title="购物街">
-      <mt-button slot="right" @click="editClick"></mt-button>
+      <mt-button slot="right" @click="titleClick">{{editOrComplete}}</mt-button>
     </mt-header>
     <div class="cart-null" v-if="isNull">
       <img src="~assets/img/cart/cart_null.png" alt="">
       <p>购物车为空！</p>
     </div>
     <cart-list v-else></cart-list>
-    <cart-bottom></cart-bottom>
+    <cart-bottom ref="cartBottom"></cart-bottom>
     
   </div>
 
@@ -33,7 +33,9 @@
     props:{},
     data(){
       return {
-        isNull: true
+        isNull: true,
+        isShowE: true,
+        editOrComplete: '编辑'
       }
     },
     computed: {
@@ -41,8 +43,25 @@
       ...mapGetters(['cartLength'])
     },
     methods: {
+      titleClick () {
+        if(this.editOrComplete == '编辑'){
+          this.editClick()
+        }else{
+          this.completeClick()
+        }
+      },
       editClick () {
-        console.log('dianji')
+        console.log('点击编辑')
+        this.editOrComplete = '完成'
+        this.isShowE = false
+        this.$refs.cartBottom.isDelete = true
+        this.$refs.cartBottom.isTotal = false
+      },
+      completeClick () {
+        console.log('点击完成')
+        this.editOrComplete = '编辑'
+        this.$refs.cartBottom.isDelete = false
+        this.$refs.cartBottom.isTotal = true
       }
     },
     created () {

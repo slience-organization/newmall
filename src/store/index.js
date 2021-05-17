@@ -30,10 +30,18 @@ export default new Vuex.Store({
     },
     decrease (state, product) {
       product.count --
+    },
+    deleteProduct (state, iids) {
+      let cartlist = state.cartList
+      while (iids.length!=0) {
+        let idx = cartlist.findIndex(item=> item.iid === iids[0])
+        cartlist.splice(idx,1)
+        iids.splice(0, 1)
+      }
     }
   },
   actions: {
-    addCart (context, product) {
+    _addCart (context, product) {
       return new Promise((resolve, reject) => {
         //1.查找cartList中有没有被添加的商品
         let oldProduct = context.state.cartList.find((item) => {
@@ -49,7 +57,7 @@ export default new Vuex.Store({
         }
       })
     },
-    decrement (context, payload) {
+    _decrement (context, payload) {
       return new Promise((resolve, reject)=> {
         let product = context.state.cartList.find((item) => {
           return item.iid === payload.iid
@@ -62,7 +70,7 @@ export default new Vuex.Store({
         }
       })
     },
-    increment (context, payload) {
+    _increment (context, payload) {
       return new Promise((resolve, reject)=> {
         let product = context.state.cartList.find((item) => {
           return payload.iid === item.iid
@@ -73,6 +81,13 @@ export default new Vuex.Store({
         } else {
           reject(product.count)
         }
+      })
+    },
+    _deleteProduct (context, payload) {
+      return new Promise((resolve, reject)=> {
+        context.commit('deleteProduct',payload.iids)
+        resolve('删除成功')
+        reject('删除失败')
       })
     }
   },

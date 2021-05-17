@@ -86,7 +86,7 @@
     watch:{},
     computed:{},
     methods:{
-      ...mapActions(['addCart']),
+      ...mapActions(['_addCart']),
       
       titleClick (index) {
         // console.log('点击了'+index)
@@ -136,7 +136,7 @@
         //通过store.dispatch分发Action
         //this.$store.dispatch('addCart', product).then(res => {console.log(res)})
         //通过mapAction辅助函数直接调用映射的方法
-        this.addCart(product).then(res => {
+        this._addCart(product).then(res => {
           Toast({message:res, duration:800})
         })
       },
@@ -166,39 +166,43 @@
           //console.log(this.detailGoodsInfo)
           
           
-          let imgsrc = this.detailGoodsInfo.detailImage[0].list
-          //console.log(typeof imgsrc)
-          let arr = new Array
           
-          for (const iterator of imgsrc) {
-            //console.log(iterator)
-            let image = new Image()
-            image.src = iterator
-            image.onload = ()=>{
-              //console.log(image.height/2)
-              arr.push(image.height/2)
-            }
-          }
-          //console.log(arr)
-          // image.src = imgsrc
-          // image.onload = function() {
-          //   console.log(image.height/2)
-          // }
-            
-            
-          //console.log(imgsrc[0])
-          // let imgs = this.detailGoodsInfo.detailImage[0].list
-          // var imgArr = new Array();
-          // imgs.forEach(element => {
-          //     let image = new Image();
-          //     image.src = element
-          //     image.onload = ()=> {
-          //     let imgheight = image.height/2
-          //       imgArr.push(imgheight)
-          //     }
-          // });
-          //console.log(imgArr)
+          
+          let imgs = this.detailGoodsInfo.detailImage[0].list
+          //console.log(imgs)
+          //console.log(Object.prototype.toString.call(imgs))
 
+          
+          var imgArr =[];
+
+          new Promise((resolve, reject)=> {
+
+            imgs.forEach(i => {
+              let image = new Image();
+              image.src = i
+
+              new Promise((a,b)=> {
+                image.onload = function() {
+                  let imgheight = image.height/2
+                  a(imgheight)
+                }
+              }).then((res)=> {
+                //console.log(res)
+                imgArr.push(res)
+              })
+
+            })
+            resolve(imgArr)
+
+          }).then((res)=> {
+            //console.log(res)
+          })
+          
+
+          // console.log(Object.prototype.toString.call(imgArr))
+          //  console.log(imgArr[0])
+          // console.log(imgArr.length)
+          // console.log(imgArr[0])
           
 
           // let totalh = imgTotalHight.reduce((x,y)=>x+y,0)
