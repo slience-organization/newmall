@@ -1,27 +1,93 @@
 <template>
-  <div v-if="Object.keys(detailGoodsInfo).length !== 0" class="goods-info">
+  <div id="goodsInfo" v-if="Object.keys(detailGoodsInfo).length!=0" class="goods-info">
     <div class="info-desc clear-fix">
       <div class="start"></div>
       <div class="desc">{{detailGoodsInfo.desc}}</div>
       <div class="end"></div>
     </div>
     <div class="info-key">{{detailGoodsInfo.detailImage[0].key}}</div>
-    <div class="info-list">
-      <img v-for="(item, index) in detailGoodsInfo.detailImage[0].list" v-lazy="item" :key="index" alt="">
+    <div id="info-list" class="info-list" v-for="(item, index) in detailGoodsInfo.detailImage[0].list" :key="index">
+      <img v-lazy="item"  alt="">
     </div>
   </div>
 </template>
 
 <script>
 	export default {
-
 		name: "DetailGoodsInfo",
     props: {
       detailGoodsInfo: {
         type: Object,
         default () {
-          return {}
+          return { }
         }
+      }
+    },
+    data () {
+      return {
+        goodsInfo: {},
+        ImgsArr: [],
+        preloadImgH: [],
+        infoChildWrap: '',
+        childrenArr: [],
+        imgWrapHeight: [],
+        goodsInfoH: 0
+      }
+    },
+    // watch: {
+    //   detailGoodsInfo (newv,oldv) {
+    //     if(newv){
+    //       //console.log(newv)
+    //       this.goodsInfo = newv
+    //       this.preLoadImg()
+    //     }
+    //   }
+    // },
+    created () {
+      //console.log('created')
+      //console.log(this.detailGoodsInfo.detailImage[0].list)
+      //this.preLoadImg()
+    },
+    mounted(){
+      //console.log(this.detailGoodsInfo.detailImage[0].list)
+      this.$nextTick(()=> {
+        this.goodsInfoH = document.getElementById('goodsInfo').clientHeight
+        console.log(this.goodsInfoH)
+        this.$store.commit('upGoodsInfoH',this.goodsInfoH)
+      })
+    },
+    methods: {
+      preLoadImg () {
+        this.$nextTick(()=> {
+          this.infoChildWrap = document.getElementsByClassName("info-list")[0]
+          console.log(this.infoChildWrap)
+          this.imgsArr = this.detailGoodsInfo.detailImage[0].list
+          //console.log(this.imgsArr)
+          
+          let preloadImgH = []
+          var that = this
+          let images = new Image()
+          this.imgsArr.forEach((i) => {
+            //console.log(i)
+            images.src = i
+            
+            images.addEventListener("load", (e)=>{
+              that.preloadImgH.push(images.height/2)
+              if(this.preloadImgH.length === this.imgsArr.length) {
+                that.infoChildWrap.appendChild(images)
+                this.childrenArr = that.infoChildWrap.children
+                for (let i = 0; i < this.childrenArr.length; i++) {
+                  this.imgWrapHeight.push(this.childrenArr[i].offsetHeight);
+                }
+                console.log(this.imgWrapHeight)
+                console.log(document.getElementById('info-list').clientHeight)
+              }else{
+
+              }
+            })
+          })
+          //console.log(this.preloadImgH)
+        })
       }
     }
 	}

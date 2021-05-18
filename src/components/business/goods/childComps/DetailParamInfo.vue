@@ -1,5 +1,5 @@
 <template>
-  <div class="param-info" v-if="Object.keys(paramInfo).length !== 0">
+  <div id="paramInfo" class="param-info" v-if="Object.keys(paramInfo).length !== 0">
     <table v-for="(table, index) in paramInfo.sizes"
            class="info-size" :key="index">
       <tr v-for="(tr, indey) in table" :key="indey">
@@ -25,6 +25,18 @@
 		  paramInfo: {
 		    type: Object
       }
+    },
+    data () {
+      return {
+        paramInfoH: 0
+      }
+    },
+    mounted () {
+      this.$nextTick(()=> {
+        this.paramInfoH = document.getElementById('paramInfo').clientHeight
+        console.log(this.paramInfoH)
+        this.$store.commit('upParamInfoH',this.paramInfoH)
+      })
     }
 	}
 </script>

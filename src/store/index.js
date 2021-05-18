@@ -5,6 +5,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    baseInfoH: 0,
+    shopInfoH: 0,
+    goodsInfoH: 0,
+    paramInfoH: 0,
+    commentInfoH: 0,
     cartList: []
   },
   getters: {
@@ -18,6 +23,28 @@ export default new Vuex.Store({
   mutations: { 
     //mutations唯一的目的就是修改state中状态
     //且mutations的每个方法的功能尽可能要单一
+
+    upBaseInfoH (s,h) {
+      s.baseInfoH = h
+      //console.log(s.baseInfoH)
+    },
+    upShopInfoH (s,h) {
+      s.shopInfoH = h
+      //console.log(s.shopInfoH)
+    },
+    upGoodsInfoH (s,h) {
+      s.goodsInfoH = h
+      //console.log(s.goodsInfoH)
+    },
+    upParamInfoH (s,h) {
+      s.paramInfoH = h
+      //console.log(s.paramInfoH)
+    },
+    upCommentInfoH (s,h) {
+      s.commentInfoH = h
+      //console.log(s.commentInfoH)
+    },
+
     addCounter (state, oldProduct) {
       oldProduct.count ++ 
     },

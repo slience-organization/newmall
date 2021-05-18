@@ -1,5 +1,5 @@
 <template>
-  <div class="shop-info">
+  <div id="shopInfo" class="shop-info">
     <div class="shop-top">
       <img :src="shop.logo">
       <span class="title">{{shop.name}}</span>
@@ -43,11 +43,23 @@
 		    type: Object
       }
     },
+    data () {
+      return {
+        shopInfoH:0
+      }
+    },
     filters: {
       sellCountFilter: function (value) {
         if (value < 10000) return value;
         return (value/10000).toFixed(1) + '万'
       }
+    },
+    mounted () {
+      this.$nextTick(()=> {
+        this.shopInfoH = document.getElementById('shopInfo').clientHeight
+        console.log(this.shopInfoH)
+        this.$store.commit('upShopInfoH',this.shopInfoH)
+      })
     }
 	}
 </script>

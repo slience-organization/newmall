@@ -1,5 +1,5 @@
 <template>
-  <div v-if="Object.keys(goods).length !== 0" class="base-info">
+  <div id="baseInfo" v-if="Object.keys(goods).length !== 0" class="base-info">
     <div class="info-title">{{goods.title}}</div>
     <div class="info-price">
       <span class="n-price">{{goods.newPrice}}</span>
@@ -27,6 +27,19 @@
 		  goods: {
 		    type: Object
       }
+    },
+    data () {
+      return {
+        baseInfoH: 0
+      }
+    },
+    mounted () {
+      this.$nextTick(()=> {
+        this.baseInfoH = document.getElementById('baseInfo').clientHeight
+        console.log(this.baseInfoH)
+        this.$store.commit('upBaseInfoH',this.baseInfoH)
+      })
+      
     }
 	}
 </script>

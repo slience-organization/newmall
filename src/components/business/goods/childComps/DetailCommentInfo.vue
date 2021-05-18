@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="commentInfo">
     <div v-if="Object.keys(commentInfo).length !== 0" class="comment-info">
       <div class="info-header">
         <div class="header-title">用户评价</div>
@@ -36,11 +36,23 @@
 		    type: Object,
       }
     },
+    data () {
+      return {
+        commentInfoH: 0
+      }
+    },
     filters: {
 		  showDate: function (value) {
         let date = new Date(value*1000);
         return formatDate(date, 'yyyy-MM-dd')
       }
+    },
+    mounted () {
+      this.$nextTick(()=> {
+        this.commentInfoH = document.getElementById('commentInfo').clientHeight
+        console.log(this.commentInfoH)
+        this.$store.commit('upCommentInfoH',this.commentInfoH)
+      })
     }
 	}
 </script>
