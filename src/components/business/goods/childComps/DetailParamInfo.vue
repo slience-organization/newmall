@@ -33,8 +33,8 @@
     },
     mounted () {
       this.$nextTick(()=> {
-        this.paramInfoH = document.getElementById('paramInfo').clientHeight
-        console.log(this.paramInfoH)
+        this.paramInfoH = document.getElementById('paramInfo').offsetHeight
+        //console.log(this.paramInfoH)
         this.$store.commit('upParamInfoH',this.paramInfoH)
       })
     }

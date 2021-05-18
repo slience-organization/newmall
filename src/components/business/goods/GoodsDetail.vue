@@ -77,7 +77,8 @@
         recommendList: [],
         isShowBacktop: false,
         //goodsImgLsn: null, //监听图片加载函数
-        themOffsetTop: [], //保存的title对应元素的位置
+        //themOffsetTop: [],
+        OffsetTopArr: [], //保存的title对应元素的位置
         //getThemOffsetTop: null, //获取title对应元素高度的函数
         currentIndex: 0, //保存当前点击title的下标
         baseInfoshow: false,
@@ -88,9 +89,17 @@
 
       }
     },
-    watch:{},
+    watch:{
+      themOffsetTop (n, o) {
+        if(n){
+          //console.log('themOffsetTop变了')
+          this.OffsetTopArr = n
+          //console.log(this.OffsetTopArr)
+        }
+      }
+    },
     computed:{
-      ...mapState(['baseInfoH','shopInfoH','goodsInfoH','paramInfoH','commentInfoH'])
+      ...mapState(['baseInfoH','shopInfoH','goodsInfoH','paramInfoH','commentInfoH','themOffsetTop'])
 
       //console.log(this.baseInfoH)
     },
@@ -100,49 +109,22 @@
       titleClick (index) {
         // console.log('点击了'+index)
         this.currentIndex = index
-       
+        //console.log(this.OffsetTopArr)
         //滚动到点击对应的元素位置
-        window.scrollTo(0, this.themOffsetTop[index])
-        //console.log(this.baseInfoH)
-        // let bh = this.$refs.detailBaseInfo.baseInfoH
-        // let sh = this.$refs.detailShopInfo.shopInfoH
-        // let gh = this.$refs.detailGoodsInfo.goodsInfoH
-        // let ph = this.$refs.detailParamInfo.paramInfoH
-        // let ch = this.$refs.detailCommentInfo.commentInfoH
-        // this.themOffsetTop = []
-        // this.themOffsetTop.push(0)
-        // this.themOffsetTop.push(bh + sh + gh)
-        // this.themOffsetTop.push(bh + sh + gh + ph)
-        // this.themOffsetTop.push(bh + sh + gh + ph + ch)
-        // this.themOffsetTop.push(Number.MAX_VALUE)
-        
+        window.scrollTo(0, this.OffsetTopArr[index])
       },
       scrollLsn () {
         window.addEventListener('scroll', this.scrolling)
       },
       scrolling () {
-        //['baseInfoH','shopInfoH','goodsInfoH','paramInfoH','commentInfoH']
-        //console.log(this.baseInfoH)
-        let bh = this.baseInfoH
-        let sh = this.shopInfoH
-        let gh = this.goodsInfoH
-        let ph = this.paramInfoH
-        let ch = this.commentInfoH
-        //this.themOffsetTop = []
-        this.themOffsetTop.push(0)
-        this.themOffsetTop.push(bh + sh + gh)
-        this.themOffsetTop.push(bh + sh + gh + ph)
-        this.themOffsetTop.push(bh + sh + gh + ph + ch)
-        this.themOffsetTop.push(Number.MAX_VALUE)
-        console.log(this.themOffsetTop)
         //[0, 16042, 17316, 17550]
         //滚动到某个位置，要选中对应的title
         let position = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
-        let length = this.themOffsetTop.length
+        let length = this.OffsetTopArr.length
         //console.log(position)
         for (let i = 0; i < length-1; i++) {
-          let ipos = this.themOffsetTop[i]
-          if(position >= ipos && position < this.themOffsetTop[i+1]) {
+          let ipos = this.OffsetTopArr[i]
+          if(position >= ipos && position < this.OffsetTopArr[i+1]) {
             if(this.currentIndex !== i) {
               this.currentIndex = i
               //console.log(this.currentIndex)
@@ -224,19 +206,37 @@
     },
     mounted(){
       this.scrollLsn()
-      this.$nextTick(()=> {
-        // let bh = this.$refs.detailBaseInfo.baseInfoH
-        // let sh = this.$refs.detailShopInfo.shopInfoH
-        // let gh = this.$refs.detailGoodsInfo.goodsInfoH
-        // let ph = this.$refs.detailParamInfo.paramInfoH
-        // let ch = this.$refs.detailCommentInfo.commentInfoH
-        // this.themOffsetTop = []
+      //console.log(this.$refs.detailParamInfo.$el.offsetTop)
+      //this.$nextTick(()=> {
+        //console.log(this.shopInfoH)
+        // let bh = this.baseInfoH
+        // let sh = this.shopInfoH
+        // let gh = this.goodsInfoH
+        // let ph = this.paramInfoH
+        // let ch = this.commentInfoH
+        // //this.themOffsetTop = []
         // this.themOffsetTop.push(0)
         // this.themOffsetTop.push(bh + sh + gh)
         // this.themOffsetTop.push(bh + sh + gh + ph)
         // this.themOffsetTop.push(bh + sh + gh + ph + ch)
         // this.themOffsetTop.push(Number.MAX_VALUE)
-      })
+      //})
+    },
+    updated() {
+      //console.log(this.$refs.detailBaseInfo.$el.offsetTop)
+      //console.log(this.$refs.detailShopInfo.$el.offsetTop)
+      //console.log(this.$refs.detailGoodsInfo.$el.offsetTop)
+      //console.log(this.$refs.detailParamInfo.$el)
+      // console.log(this.$refs.detailCommentInfo.$el.offsetTop)
+      // console.log(this.$refs.goodsList.$el.offsetTop)
+
+      //this.themOffsetTop = []
+      // this.themOffsetTop.push(0)
+      // this.themOffsetTop.push(this.$refs.detailParamInfo.$el.offsetTop)
+      // this.themOffsetTop.push(this.$refs.detailCommentInfo.$el.offsetTop)
+      // this.themOffsetTop.push(this.$refs.goodsList.$el.offsetTop)
+      // this.themOffsetTop.push(Number.MAX_VALUE)
+      // console.log(this.themOffsetTop)
     }
   }
 </script>

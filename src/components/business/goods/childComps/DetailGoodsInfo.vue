@@ -51,8 +51,8 @@
     mounted(){
       //console.log(this.detailGoodsInfo.detailImage[0].list)
       this.$nextTick(()=> {
-        this.goodsInfoH = document.getElementById('goodsInfo').clientHeight
-        console.log(this.goodsInfoH)
+        this.goodsInfoH = document.getElementById('goodsInfo').offsetHeight
+        //console.log(this.goodsInfoH)
         this.$store.commit('upGoodsInfoH',this.goodsInfoH)
       })
     },

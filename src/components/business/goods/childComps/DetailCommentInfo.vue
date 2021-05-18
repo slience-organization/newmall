@@ -28,6 +28,7 @@
 
 <script>
   import {formatDate} from "common/Utils";
+  import { mapState } from 'vuex'
 
   export default {
 		name: "DetailCommentInfo",
@@ -38,7 +39,7 @@
     },
     data () {
       return {
-        commentInfoH: 0
+        lcommentInfoH: 0
       }
     },
     filters: {
@@ -47,11 +48,20 @@
         return formatDate(date, 'yyyy-MM-dd')
       }
     },
+    computed: {
+      ...mapState(['baseInfoH','shopInfoH','goodsInfoH','paramInfoH','commentInfoH','themOffsetTop'])
+    },
     mounted () {
       this.$nextTick(()=> {
-        this.commentInfoH = document.getElementById('commentInfo').clientHeight
-        console.log(this.commentInfoH)
-        this.$store.commit('upCommentInfoH',this.commentInfoH)
+        this.lcommentInfoH = document.getElementById('commentInfo').offsetHeight
+        //console.log(this.lcommentInfoH)
+        this.$store.commit('upCommentInfoH',this.lcommentInfoH)
+        let bh = this.baseInfoH
+        let sh = this.shopInfoH
+        let gh = this.goodsInfoH
+        let ph = this.paramInfoH
+        let ch = this.commentInfoH
+        this.$store.commit('upthemOffsetTop',[bh,sh,gh,ph,ch])
       })
     }
 	}

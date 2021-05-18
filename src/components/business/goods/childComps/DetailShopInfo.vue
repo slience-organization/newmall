@@ -57,7 +57,7 @@
     mounted () {
       this.$nextTick(()=> {
         this.shopInfoH = document.getElementById('shopInfo').clientHeight
-        console.log(this.shopInfoH)
+        //console.log(this.shopInfoH)
         this.$store.commit('upShopInfoH',this.shopInfoH)
       })
     }

@@ -35,11 +35,10 @@
     },
     mounted () {
       this.$nextTick(()=> {
-        this.baseInfoH = document.getElementById('baseInfo').clientHeight
-        console.log(this.baseInfoH)
+        this.baseInfoH = document.getElementById('baseInfo').offsetHeight+15
+        //console.log(this.baseInfoH)//+15 margintop
         this.$store.commit('upBaseInfoH',this.baseInfoH)
       })
-      
     }
 	}
 </script>
