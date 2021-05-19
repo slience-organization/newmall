@@ -28,6 +28,7 @@
 
 <script>
   import {formatDate} from "common/Utils";
+  import { mapState } from 'vuex'
 
   export default {
 		name: "DetailCommentInfo",
@@ -38,7 +39,7 @@
     },
     data () {
       return {
-        commentInfoH: 0
+        lcommentInfoH: 0
       }
     },
     filters: {

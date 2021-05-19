@@ -10,6 +10,7 @@ export default new Vuex.Store({
     goodsInfoH: 0,
     paramInfoH: 0,
     commentInfoH: 0,
+    themOffsetTop: [],
     cartList: []
   },
   getters: {
@@ -43,6 +44,10 @@ export default new Vuex.Store({
     upCommentInfoH (s,h) {
       s.commentInfoH = h
       //console.log(s.commentInfoH)
+    },
+    upthemOffsetTop (s,h) {
+      s.themOffsetTop = [0, h[0] + h[1] + h[2], h[0] + h[1] + h[2] + h[3], h[0] + h[1] + h[2] + h[3] + h[4], Number.MAX_VALUE]
+      //console.log(s.themOffsetTop)
     },
 
     addCounter (state, oldProduct) {

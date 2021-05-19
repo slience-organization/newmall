@@ -77,7 +77,8 @@
         recommendList: [],
         isShowBacktop: false,
         //goodsImgLsn: null, //监听图片加载函数
-        themOffsetTop: [], //保存的title对应元素的位置
+        //themOffsetTop: [],
+        OffsetTopArr: [], //保存的title对应元素的位置
         //getThemOffsetTop: null, //获取title对应元素高度的函数
         currentIndex: 0, //保存当前点击title的下标
         bh: 0,
@@ -104,7 +105,7 @@
 
     },
     computed:{
-      ...mapState(['baseInfoH','shopInfoH','goodsInfoH','paramInfoH','commentInfoH'])
+      ...mapState(['baseInfoH','shopInfoH','goodsInfoH','paramInfoH','commentInfoH','themOffsetTop'])
 
       //console.log(this.baseInfoH)
     },
@@ -157,11 +158,11 @@
         //[0, 16042, 17316, 17550]
         //滚动到某个位置，要选中对应的title
         let position = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
-        let length = this.themOffsetTop.length
+        let length = this.OffsetTopArr.length
         //console.log(position)
         for (let i = 0; i < length-1; i++) {
-          let ipos = this.themOffsetTop[i]
-          if(position >= ipos && position < this.themOffsetTop[i+1]) {
+          let ipos = this.OffsetTopArr[i]
+          if(position >= ipos && position < this.OffsetTopArr[i+1]) {
             if(this.currentIndex !== i) {
               this.currentIndex = i
               //console.log(this.currentIndex)
