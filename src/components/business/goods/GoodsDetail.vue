@@ -8,15 +8,15 @@
     <!-- 顶部轮播图 -->
     <detail-swiper :topImages="topImages"></detail-swiper>
     <!-- 详情标题，价格 -->
-    <detail-base-info ref="detailBaseInfo" v-if="baseInfoshow" :goods="goods"></detail-base-info>
+    <detail-base-info ref="detailBaseInfo" :goods="goods"></detail-base-info>
     <!-- 店铺信息 -->
-    <detail-shop-info ref="detailShopInfo" v-if="shopInfoshow" :shop="shop"></detail-shop-info>
+    <detail-shop-info ref="detailShopInfo" :shop="shop"></detail-shop-info>
     <!-- 穿着效果 -->
-    <detail-goods-info ref="detailGoodsInfo" v-if="goodsInfoshow" :detailGoodsInfo="detailGoodsInfo"></detail-goods-info>
+    <detail-goods-info ref="detailGoodsInfo" :detailGoodsInfo="detailGoodsInfo"></detail-goods-info>
     <!-- 商品参数信息 -->
-    <detail-param-info ref="detailParamInfo" v-if="paramInfoshow" :paramInfo="paramInfo"></detail-param-info>
+    <detail-param-info ref="detailParamInfo" :paramInfo="paramInfo"></detail-param-info>
     <!-- 商品评论信息 -->
-    <detail-comment-info ref="detailCommentInfo" v-if="commentInfoshow" :commentInfo="commentInfo"></detail-comment-info>
+    <detail-comment-info ref="detailCommentInfo" :commentInfo="commentInfo"></detail-comment-info>
     <!-- 商品推荐信息,复用goods-list -->
     <div class="tuijian">--<img src="~assets/img/profile/aixin.svg" alt="">精选推荐--</div>
     <goods-list ref="goodsList" :goods="recommendList"></goods-list>
@@ -80,15 +80,29 @@
         themOffsetTop: [], //保存的title对应元素的位置
         //getThemOffsetTop: null, //获取title对应元素高度的函数
         currentIndex: 0, //保存当前点击title的下标
-        baseInfoshow: false,
-        shopInfoshow: false,
-        goodsInfoshow: false,
-        paramInfoshow: false,
-        commentInfoshow: false,
+        bh: 0,
+        sh: 0,
+        gh: 0,
+        ph: 0,
+        ch: 0,
 
       }
     },
-    watch:{},
+    watch:{
+      baseInfoH(n,o){
+        if(n){
+          //console.log(n)
+          this.bh = n
+        }
+      },
+      goodsInfoH(n,o){
+        if(n){
+          console.log(n)
+          //this.bh = n
+        }
+      }
+
+    },
     computed:{
       ...mapState(['baseInfoH','shopInfoH','goodsInfoH','paramInfoH','commentInfoH'])
 
@@ -98,11 +112,14 @@
       ...mapActions(['_addCart']),
       
       titleClick (index) {
-        // console.log('点击了'+index)
+        //console.log(this.baseInfoH)
         this.currentIndex = index
+        // var elmnt = document.getElementById("baseInfo");
+        // elmnt.scrollIntoView();
        
         //滚动到点击对应的元素位置
-        window.scrollTo(0, this.themOffsetTop[index])
+        window.scrollTo(0, this.goodsInfoH)
+
         //console.log(this.baseInfoH)
         // let bh = this.$refs.detailBaseInfo.baseInfoH
         // let sh = this.$refs.detailShopInfo.shopInfoH
@@ -117,24 +134,26 @@
         // this.themOffsetTop.push(Number.MAX_VALUE)
         
       },
+      getThemOffsetTop () {
+        //console.log(this.baseInfoH)
+        // let bh = this.bh
+        // let sh = this.sh
+        // let gh = this.gh
+        // let ph = this.ph
+        // let ch = this.ch
+        // //this.themOffsetTop = []
+        // this.themOffsetTop.push(0)
+        // this.themOffsetTop.push(bh + sh + gh)
+        // this.themOffsetTop.push(bh + sh + gh + ph)
+        // this.themOffsetTop.push(bh + sh + gh + ph + ch)
+        // this.themOffsetTop.push(Number.MAX_VALUE)
+        // console.log(this.themOffsetTop)
+      },
       scrollLsn () {
         window.addEventListener('scroll', this.scrolling)
       },
       scrolling () {
-        //['baseInfoH','shopInfoH','goodsInfoH','paramInfoH','commentInfoH']
-        //console.log(this.baseInfoH)
-        let bh = this.baseInfoH
-        let sh = this.shopInfoH
-        let gh = this.goodsInfoH
-        let ph = this.paramInfoH
-        let ch = this.commentInfoH
-        //this.themOffsetTop = []
-        this.themOffsetTop.push(0)
-        this.themOffsetTop.push(bh + sh + gh)
-        this.themOffsetTop.push(bh + sh + gh + ph)
-        this.themOffsetTop.push(bh + sh + gh + ph + ch)
-        this.themOffsetTop.push(Number.MAX_VALUE)
-        console.log(this.themOffsetTop)
+        
         //[0, 16042, 17316, 17550]
         //滚动到某个位置，要选中对应的title
         let position = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
@@ -198,13 +217,6 @@
             this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule)
             //获取评论信息
             this.commentInfo = data.rate.list[0]
-
-            this.baseInfoshow = true
-            this.shopInfoshow = true
-            this.goodsInfoshow = true
-            this.paramInfoshow = true
-            this.commentInfoshow = true
-            
           }
         })
       },
@@ -224,18 +236,10 @@
     },
     mounted(){
       this.scrollLsn()
+      this.getThemOffsetTop()
       this.$nextTick(()=> {
-        // let bh = this.$refs.detailBaseInfo.baseInfoH
-        // let sh = this.$refs.detailShopInfo.shopInfoH
-        // let gh = this.$refs.detailGoodsInfo.goodsInfoH
-        // let ph = this.$refs.detailParamInfo.paramInfoH
-        // let ch = this.$refs.detailCommentInfo.commentInfoH
-        // this.themOffsetTop = []
-        // this.themOffsetTop.push(0)
-        // this.themOffsetTop.push(bh + sh + gh)
-        // this.themOffsetTop.push(bh + sh + gh + ph)
-        // this.themOffsetTop.push(bh + sh + gh + ph + ch)
-        // this.themOffsetTop.push(Number.MAX_VALUE)
+        console.log(this.$refs.goodsList.preloadImgH)
+        console.log(this.baseInfoH)
       })
     }
   }

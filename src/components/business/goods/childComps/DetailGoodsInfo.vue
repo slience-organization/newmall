@@ -34,27 +34,59 @@
         goodsInfoH: 0
       }
     },
-    // watch: {
-    //   detailGoodsInfo (newv,oldv) {
-    //     if(newv){
-    //       //console.log(newv)
-    //       this.goodsInfo = newv
-    //       this.preLoadImg()
-    //     }
-    //   }
-    // },
-    created () {
-      //console.log('created')
-      //console.log(this.detailGoodsInfo.detailImage[0].list)
-      //this.preLoadImg()
+    watch: {
+      preloadImgH(n, o){
+        if(n.length === this.imgs.length){
+          console.log(n)
+          let totalH = n.reduce((pre, cur)=> {
+            return pre+cur
+          })
+          console.log(totalH)
+          this.$store.commit('upGoodsInfoH',totalH)
+        }
+      }
     },
-    mounted(){
-      //console.log(this.detailGoodsInfo.detailImage[0].list)
-      this.$nextTick(()=> {
-        this.goodsInfoH = document.getElementById('goodsInfo').clientHeight
-        console.log(this.goodsInfoH)
-        this.$store.commit('upGoodsInfoH',this.goodsInfoH)
-      })
+    updated() {
+      if(this.detailGoodsInfo){
+        this.imgs = this.detailGoodsInfo.detailImage[0].list
+        //let images = []
+        let loadAll = []
+        let imgH = []
+        //let loadImg = new Promise((res, rej)=> {
+          for (let i of this.imgs) {
+            //loadAll[i] = new Promise((resolve, reject)=>{
+              let images = new Image()
+              images.src = i
+              images.onload = function() {
+                imgH.push(images.height/2)
+                //reject('失败')
+                //console.log(images.height/2)
+              }
+            //})
+          }
+          console.log(imgH)
+          this.preloadImgH = imgH
+          //res(imgH)
+        //})
+        // loadImg.then((res)=>{
+        //   console.log(res)
+        // }).catch(()=>{
+        //   console.log('erro')
+        // })
+        
+        // if(imgs.length === imgH.length){
+        //   console.log(imgH)
+        // }
+        // setTimeout(()=>{
+        //   console.log(imgH)
+        // },1000)
+        
+
+      }
+      
+      //console.log(this.detailGoodsInfo)
+      console.log('穿着效果图片' + this.$el.offsetTop)
+      //this.$store.commit('upGoodsInfoH',this.$el.offsetHeight)
     },
     methods: {
       preLoadImg () {

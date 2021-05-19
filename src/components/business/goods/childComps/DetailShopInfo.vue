@@ -54,12 +54,9 @@
         return (value/10000).toFixed(1) + '万'
       }
     },
-    mounted () {
-      this.$nextTick(()=> {
-        this.shopInfoH = document.getElementById('shopInfo').clientHeight
-        console.log(this.shopInfoH)
-        this.$store.commit('upShopInfoH',this.shopInfoH)
-      })
+    updated() {
+      console.log('店铺高度：' + this.$el.offsetHeight)//235
+      this.$store.commit('upShopInfoH',this.$el.offsetHeight)
     }
 	}
 </script>

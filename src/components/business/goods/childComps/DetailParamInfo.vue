@@ -31,13 +31,10 @@
         paramInfoH: 0
       }
     },
-    mounted () {
-      this.$nextTick(()=> {
-        this.paramInfoH = document.getElementById('paramInfo').clientHeight
-        console.log(this.paramInfoH)
-        this.$store.commit('upParamInfoH',this.paramInfoH)
-      })
-    }
+    updated() {
+      console.log('参数信息：' + this.$el.offsetHeight)
+      this.$store.commit('upParamInfoH',this.$el.offsetHeight)
+    },
 	}
 </script>
 

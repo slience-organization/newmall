@@ -47,12 +47,9 @@
         return formatDate(date, 'yyyy-MM-dd')
       }
     },
-    mounted () {
-      this.$nextTick(()=> {
-        this.commentInfoH = document.getElementById('commentInfo').clientHeight
-        console.log(this.commentInfoH)
-        this.$store.commit('upCommentInfoH',this.commentInfoH)
-      })
+    updated() {
+      console.log('评论信息' + this.$el.offsetHeight)
+      this.$store.commit('upCommentInfoH',this.$el.offsetHeight)
     }
 	}
 </script>

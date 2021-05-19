@@ -28,18 +28,28 @@
 		    type: Object
       }
     },
+    // watch: {
+    //   goods(n,o){
+    //     if(n){
+    //       console.log(this.$el)
+    //     }
+    //   }
+    // },
     data () {
       return {
         baseInfoH: 0
       }
     },
     mounted () {
-      this.$nextTick(()=> {
-        this.baseInfoH = document.getElementById('baseInfo').clientHeight
-        console.log(this.baseInfoH)
-        this.$store.commit('upBaseInfoH',this.baseInfoH)
-      })
-      
+      //this.$nextTick(()=> {
+        //this.baseInfoH = document.getElementById('baseInfo').clientHeight
+        //console.log(this.baseInfoH)
+        //this.$store.commit('upBaseInfoH',this.baseInfoH)
+      //})
+    },
+    updated() {
+      console.log('商品描述：' + this.$el.clientHeight)
+      this.$store.commit('upBaseInfoH',this.$el.offsetHeight)
     }
 	}
 </script>
