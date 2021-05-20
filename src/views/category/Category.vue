@@ -5,12 +5,9 @@
 
     <div class="left">
       <div v-for="(item,index) in categoryList" :key="index" 
-        :class="{isbgc:currentIndex==index}" @click="cateClick(index)">{{item.title}}</div>
-      <!-- <div>
-        <mt-cell v-for="(item, index) in categoryList" :key="index" @click.native="cateClick(item.maitKey)">
-          {{item.title}}
-        </mt-cell>
-      </div> -->
+        :class="{isbgc:currentIndex==index}" @click="cateClick(index)">
+        {{item.title}}
+      </div>
     </div>
 
     <div class="right">

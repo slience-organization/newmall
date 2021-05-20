@@ -14,7 +14,7 @@
     
     <feature-view ref="featureView"></feature-view>
    
-    <tab-control ref="cpTabControl" :titles="titles" @tabClick="tabClick" class="tabControlShown" v-show="isTabFixed"></tab-control>
+    <tab-control ref="cpTabControl" :titles="titles" @tabClick="tabClick" class="sticky" v-show="isSticky"></tab-control>
    
     <tab-control ref="tabControl" :titles="titles" @tabClick="tabClick"></tab-control>
     
@@ -29,7 +29,7 @@
 <script>
   import { Header, Swipe, SwipeItem, Loadmore, Toast, } from "mint-ui";
 
-
+  import {debounce} from 'common/Utils'
   import {_getHomeMultiData, _getHomeGoods} from 'network/api'
   import Recommend from 'business/home/Recommend.vue';
   import FeatureView from 'business/home/FeatureView.vue';
@@ -48,7 +48,6 @@
       GoodsList,
       Toast,
       Loadmore
-
     },
     props: {},
     data () {
@@ -64,7 +63,8 @@
         currentType: 'pop', //当前类型
         tabControlOffsetTop: 0, //OffsetTop
         isTabFixed: false, //是否吸顶
-        scrollTop: 0
+        scrollTop: 0,
+        isSticky: false
       };
     },
     watch: {},
@@ -118,11 +118,11 @@
         this.scrollTop = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
         //console.log(this.scrollTop)
         if (this.tabControlOffsetTop - this.scrollTop <= 40) {
-          //console.log('tab 显示')
-          this.isTabFixed = true
+          this.isSticky = true
+          //console.log(this.isTabFixed)
         } else {
-          this.isTabFixed = false
-          //console.log('tab 隐藏')
+          this.isSticky = false
+          //console.log(this.isTabFixed)
         }
       }
     },
@@ -158,7 +158,7 @@
 </script>
 
 <style lang="css" scoped>
-  .tabControlShown{
+  .sticky {
     position: fixed;
     left: 0;
     right: 0;

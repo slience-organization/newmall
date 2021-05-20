@@ -23,7 +23,7 @@ export default new Vuex.Store({
       oldProduct.count ++ 
     },
     addToCart (state, product) {
-      product.checked = true
+      product.checked = false
       state.cartList.push(product)
     },
     increase (state, product) {

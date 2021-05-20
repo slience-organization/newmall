@@ -11,6 +11,7 @@
     </div>
     <!-- 商品推荐信息,复用goods-list -->
     <goods-list :goods="recommendList"></goods-list>  
+
   </div>
 
 </template>
@@ -45,27 +46,6 @@
         this.recommendList = res.data.data.list
         //console.log(res)
       })
-      let arrs = [{iid:'a',name:'jams'},{iid:'b',name:'jack'},{iid:'c',name:'jenry'},{iid:'d',name:'tom'}]
-      let dearr = ['a','b','c','d']
-      
-      while (dearr.length!=0) {
-        let idx = arrs.findIndex(item=> item.iid === dearr[0])
-        arrs.splice(idx,1)
-        dearr.shift()
-      }
-      console.log(arrs)
-
-        // let idx = arrs.findIndex((item)=> {
-        //   return item.iid === dearr[0]
-        // })
-        // arrs.splice(idx,1)
-
-        //console.log(arrs)
-      
-      
-      
-      
-      //console.log(Object.prototype.toString.call(arr))
     },
     mounted () { }
   }
