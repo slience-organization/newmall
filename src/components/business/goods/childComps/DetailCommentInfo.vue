@@ -28,7 +28,6 @@
 
 <script>
   import {formatDate} from "common/Utils";
-  import { mapState } from 'vuex'
 
   export default {
 		name: "DetailCommentInfo",
@@ -47,10 +46,6 @@
         let date = new Date(value*1000);
         return formatDate(date, 'yyyy-MM-dd')
       }
-    },
-    updated() {
-      console.log('评论信息' + this.$el.offsetHeight)
-      this.$store.commit('upCommentInfoH',this.$el.offsetHeight)
     }
 	}
 </script>

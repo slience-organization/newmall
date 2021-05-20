@@ -6,7 +6,7 @@
       @titleClick="titleClick" :currentIndex="currentIndex"></detail-nav-bar>
     
     <!-- 顶部轮播图 -->
-    <detail-swiper :topImages="topImages"></detail-swiper>
+    <detail-swiper ref="detailSwipe" :topImages="topImages"></detail-swiper>
     <!-- 详情标题，价格 -->
     <detail-base-info ref="detailBaseInfo" :goods="goods"></detail-base-info>
     <!-- 店铺信息 -->
@@ -19,7 +19,7 @@
     <detail-comment-info ref="detailCommentInfo" :commentInfo="commentInfo"></detail-comment-info>
     <!-- 商品推荐信息,复用goods-list -->
     <div class="tuijian">--<img src="~assets/img/profile/aixin.svg" alt="">精选推荐--</div>
-    <goods-list ref="goodsList" :goods="recommendList"></goods-list>
+    <goods-list ref="detailGoodsList" :goods="recommendList"></goods-list>
 
     <detail-bottom-bar @addToCart="addToCart" @goBuy="goBuy" @leftBar="leftBar"></detail-bottom-bar>
 
@@ -45,7 +45,7 @@
   import {debounce} from 'common/Utils'
   //import {goodsImgLsnMixin} from 'common/Mixin'
   import BackTop from 'common/backTop/BackTop.vue'
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
 
   export default {
     name: 'GoodsDetail',
@@ -77,84 +77,37 @@
         recommendList: [],
         isShowBacktop: false,
         //goodsImgLsn: null, //监听图片加载函数
-        //themOffsetTop: [],
-        OffsetTopArr: [], //保存的title对应元素的位置
+        OffsetTopArr: [], //存储标题对应元素的高度
         //getThemOffsetTop: null, //获取title对应元素高度的函数
         currentIndex: 0, //保存当前点击title的下标
-        bh: 0,
-        sh: 0,
-        gh: 0,
-        ph: 0,
-        ch: 0,
 
       }
     },
-    watch:{
-      baseInfoH(n,o){
-        if(n){
-          //console.log(n)
-          this.bh = n
-        }
-      },
-      goodsInfoH(n,o){
-        if(n){
-          console.log(n)
-          //this.bh = n
-        }
-      }
-
-    },
-    computed:{
-      ...mapState(['baseInfoH','shopInfoH','goodsInfoH','paramInfoH','commentInfoH','themOffsetTop'])
-
-      //console.log(this.baseInfoH)
-    },
+    watch:{},
+    computed:{},
     methods:{
       ...mapActions(['_addCart']),
       
       titleClick (index) {
-        //console.log(this.baseInfoH)
         this.currentIndex = index
-        // var elmnt = document.getElementById("baseInfo");
         // elmnt.scrollIntoView();
        
         //滚动到点击对应的元素位置
-        window.scrollTo(0, this.goodsInfoH)
-
-        //console.log(this.baseInfoH)
-        // let bh = this.$refs.detailBaseInfo.baseInfoH
-        // let sh = this.$refs.detailShopInfo.shopInfoH
-        // let gh = this.$refs.detailGoodsInfo.goodsInfoH
-        // let ph = this.$refs.detailParamInfo.paramInfoH
-        // let ch = this.$refs.detailCommentInfo.commentInfoH
-        // this.themOffsetTop = []
-        // this.themOffsetTop.push(0)
-        // this.themOffsetTop.push(bh + sh + gh)
-        // this.themOffsetTop.push(bh + sh + gh + ph)
-        // this.themOffsetTop.push(bh + sh + gh + ph + ch)
-        // this.themOffsetTop.push(Number.MAX_VALUE)
-        
+        window.scrollTo(0, this.OffsetTopArr[index])
       },
       getThemOffsetTop () {
-        //console.log(this.baseInfoH)
-        // let bh = this.bh
-        // let sh = this.sh
-        // let gh = this.gh
-        // let ph = this.ph
-        // let ch = this.ch
-        // //this.themOffsetTop = []
-        // this.themOffsetTop.push(0)
-        // this.themOffsetTop.push(bh + sh + gh)
-        // this.themOffsetTop.push(bh + sh + gh + ph)
-        // this.themOffsetTop.push(bh + sh + gh + ph + ch)
-        // this.themOffsetTop.push(Number.MAX_VALUE)
-        // console.log(this.themOffsetTop)
+        //组件update时调用，获取标题对应元素的位置
+        this.OffsetTopArr = []
+        this.OffsetTopArr.push(0)//商品顶部
+        this.OffsetTopArr.push(this.$refs.detailParamInfo.$el.offsetTop)//参数
+        this.OffsetTopArr.push(this.$refs.detailCommentInfo.$el.offsetTop)//评论
+        this.OffsetTopArr.push(this.$refs.detailGoodsList.$el.offsetTop)//推荐
+        this.OffsetTopArr.push(Number.MAX_VALUE)
       },
       scrollLsn () {
         window.addEventListener('scroll', this.scrolling)
       },
       scrolling () {
-        
         //[0, 16042, 17316, 17550]
         //滚动到某个位置，要选中对应的title
         let position = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
@@ -236,12 +189,13 @@
       this.getRecommend()
     },
     mounted(){
+      window.scrollTo(0, 0)
+      
+    },
+    updated(){
+      //父组件updated就去从新计算标题对应元素的位置
       this.scrollLsn()
       this.getThemOffsetTop()
-      this.$nextTick(()=> {
-        console.log(this.$refs.goodsList.preloadImgH)
-        console.log(this.baseInfoH)
-      })
     }
   }
 </script>

@@ -30,11 +30,7 @@
       return {
         paramInfoH: 0
       }
-    },
-    updated() {
-      console.log('参数信息：' + this.$el.offsetHeight)
-      this.$store.commit('upParamInfoH',this.$el.offsetHeight)
-    },
+    }
 	}
 </script>
 

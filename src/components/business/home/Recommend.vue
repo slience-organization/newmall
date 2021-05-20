@@ -1,13 +1,12 @@
 <template>
+
   <div class="recommend">
-    <div v-for="item in recommends" :key="item.acm" class="recommend-item">
-      <!-- <a :href="item.link"> -->
-        <a>
-          <img :src="item.image" alt="">
-          <div>{{item.title}}</div>
-        </a>
-    </div>
+      <div  v-for="item in recommends" :key="item.acm">
+        <img :src="item.image" alt="">
+        <p>{{item.title}}</p>
+      </div>
   </div>
+
 </template>
 
 <script>
@@ -36,17 +35,18 @@ export default {
   .recommend {
     display: flex;
     width: 100%;
-    text-align: center;
-    font-size: 12px;
-    padding: 10px 0 20px;
+    padding: 3% 5%;
+    justify-content: space-between;
     border-bottom: 8px solid #eee;
+    flex-grow: 0;
   }
-  .recommend-item {
-    flex: 1;
+  .recommend>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
   }
-  .recommend-item img{
-    width: 70px;
-    height: 70px;
-    margin-bottom: 10px;
+  .recommend img {
+    width: 83%;
   }
 </style>

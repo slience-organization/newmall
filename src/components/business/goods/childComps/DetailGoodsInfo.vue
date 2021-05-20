@@ -25,68 +25,22 @@
     },
     data () {
       return {
-        goodsInfo: {},
         ImgsArr: [],
-        preloadImgH: [],
-        infoChildWrap: '',
-        childrenArr: [],
-        imgWrapHeight: [],
-        goodsInfoH: 0
-      }
-    },
-    watch: {
-      preloadImgH(n, o){
-        if(n.length === this.imgs.length){
-          console.log(n)
-          let totalH = n.reduce((pre, cur)=> {
-            return pre+cur
-          })
-          console.log(totalH)
-          this.$store.commit('upGoodsInfoH',totalH)
-        }
       }
     },
     updated() {
       if(this.detailGoodsInfo){
         this.imgs = this.detailGoodsInfo.detailImage[0].list
-        //let images = []
-        let loadAll = []
         let imgH = []
-        //let loadImg = new Promise((res, rej)=> {
-          for (let i of this.imgs) {
-            //loadAll[i] = new Promise((resolve, reject)=>{
-              let images = new Image()
-              images.src = i
-              images.onload = function() {
-                imgH.push(images.height/2)
-                //reject('失败')
-                //console.log(images.height/2)
-              }
-            //})
-          }
-          console.log(imgH)
-          this.preloadImgH = imgH
-          //res(imgH)
-        //})
-        // loadImg.then((res)=>{
-        //   console.log(res)
-        // }).catch(()=>{
-        //   console.log('erro')
-        // })
-        
-        // if(imgs.length === imgH.length){
-        //   console.log(imgH)
-        // }
-        // setTimeout(()=>{
-        //   console.log(imgH)
-        // },1000)
-        
-
+        for (let i of this.imgs) {
+            let images = new Image()
+            images.src = i
+            images.onload = function() {
+              imgH.push(images.height/2)
+            }
+        }
+        this.preloadImgH = imgH
       }
-      
-      //console.log(this.detailGoodsInfo)
-      console.log('穿着效果图片' + this.$el.offsetTop)
-      //this.$store.commit('upGoodsInfoH',this.$el.offsetHeight)
     },
     methods: {
       preLoadImg () {

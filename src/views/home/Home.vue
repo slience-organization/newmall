@@ -14,9 +14,9 @@
     
     <feature-view ref="featureView"></feature-view>
    
-    <tab-control ref="cpTabControl" :titles="['流行','新款','精选']"  @tabClick="tabClick" class="tabControlShown" v-show="isTabFixed"></tab-control>
+    <tab-control ref="cpTabControl" :titles="titles" @tabClick="tabClick" class="tabControlShown" v-show="isTabFixed"></tab-control>
    
-    <tab-control id="tabControl" ref="tabControl" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
+    <tab-control ref="tabControl" :titles="titles" @tabClick="tabClick"></tab-control>
     
     <mt-loadmore :bottom-method="loadBottom" ref="loadmore">
       <goods-list :goods="goods[currentType].list"></goods-list>
@@ -53,6 +53,7 @@
     props: {},
     data () {
       return {
+        titles: ['流行','新款','精选'],
         banners: [],//轮播图
         recommends: [],//推荐
         goods: { //商品数据
@@ -63,9 +64,7 @@
         currentType: 'pop', //当前类型
         tabControlOffsetTop: 0, //OffsetTop
         isTabFixed: false, //是否吸顶
-        scrollTop: 0,
-
-        
+        scrollTop: 0
       };
     },
     watch: {},
@@ -115,7 +114,6 @@
         window.addEventListener('scroll', this.scrolling)
       },
       scrolling () {
-        this.tabControlOffsetTop = this.$refs.tabControl.$el.offsetTop;
         //console.log(this.tabControlOffsetTop)
         this.scrollTop = (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop).toFixed(0)
         //console.log(this.scrollTop)
@@ -124,6 +122,7 @@
           this.isTabFixed = true
         } else {
           this.isTabFixed = false
+          //console.log('tab 隐藏')
         }
       }
     },
@@ -138,6 +137,10 @@
     },
     mounted () {
       this.scrollLsn()
+    },
+    updated() {
+      this.tabControlOffsetTop = this.$refs.tabControl.$el.offsetTop;
+      //console.log('tab图：'+this.$refs.tabControl.$el.offsetTop)
     },
     activated () {
       //console.log('--home activated')
